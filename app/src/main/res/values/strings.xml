@@ -1,0 +1,113 @@
+<resources>
+    <string name="app_name">Mouse Mover</string>
+    <string name="start_button">Start</string>
+
+    <string name="start_screen_title"><b>Compatibility note:</b></string>
+    <string name="start_screen_description"><![CDATA[
+    <font color="#FF3B30"><b>Red Light Mouse Only.</b></font> <font color="#000000">This app only works with mice that use a visible red optical sensor. Mice with infrared or laser sensors are not supported.<br/><br/>
+    <b>Having issues?</b><br/>
+    - Keep you phone screen <b>perfectly clean</b><br/>
+    - In rare cases, a <b>phone screen protector</b> can stop your mouse from working properly</font>
+    ]]>
+    </string>
+    <string name="start_screen_description_legacy"><b>Red Light Mouse Only.</b> This app only works with mice that use a visible red optical sensor. Mice with infrared or laser sensors are not supported.\n\n
+        <b>Having issues?</b>\n
+        - Keep you phone screen <b>perfectly clean</b>\n
+        - In rare cases, a phone <b>screen protector</b> can stop your mouse from working properly</string>
+    <string name="app_release_notes"><b>How to use this app:</b>\n- Press <b>Play</b> button to start background moving\n- Press <b>Stop</b> button to stop it\n- The app will set on pause between activity periods\n- Check <b>Settings</b> to customize app\'s behaviour</string>
+    <string name="main_screen_title_off">Mouse Mover | OFF</string>
+    <string name="main_screen_title_on">Mouse Mover | ON</string>
+    <string name="main_screen_title_waiting">Mouse Mover | </string>
+    <string name="stealth_mode_switch">Stealth Mode</string>
+    <string name="stealth_mode_info">Disable stealth mode to configure timers</string>
+    <string name="stealth_dialog_title">Stealth mode</string>
+    <string name="stealth_dialog_message">This mode randomizes mouse movement intervals, making it virtually impossible for activity monitoring systems to detect the mouse mover.\n\nWatch video ad to use this mode all day.</string>
+    <string name="stealth">Stealth</string>
+    <string name="regular">Regular</string>
+    <string name="mode_change_to">Mode changed to</string>
+    <string name="play_pause_button_description">Play or Pause</string>
+    <string name="power_saving_mode_text">Power saving enabled\nWaiting <b>%1$02d:%2$02d</b>\nbefore next activity\n%3$s</string>
+    <string name="mode_normal_label">Regular mode</string>
+    <string name="mode_stealth_label">Stealth mode</string>
+
+    <string name="options_button">Options</string>
+    <string name="back_button">Back</string>
+    <string name="menu_contact">Contact Us</string>
+    <string name="menu_disclaimer">Disclaimer</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_faq">FAQ</string>
+    <string name="menu_privacy_settings">Privacy settings</string>
+    <string name="menu_privacy_policy">Privacy Policy</string>
+    <string name="privacy_not_applicable_title">Privacy Settings</string>
+    <string name="privacy_not_applicable_message">For your region, privacy regulations do not require specific settings. You can continue to use the app as usual.</string>
+    <string name="menu_settings">Settings</string>
+
+    <string name="email_feedback_subject">Feedback for Mouse Mover App</string>
+    <string name="email_chooser_title">Send email...</string>
+    <string name="email_client_not_found">No email clients installed.</string>
+    <string name="share_app_text">Check out this cool app: %1$s</string>
+
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="rewarded_ad_not_ready">Ad not ready, please try again</string>
+
+    <string name="disclaimer_text">Disclaimer: This application is for entertainment and convenience purposes only. The developer is not responsible for any consequences of using this application...</string>
+    <string name="app_version_prefix"><b>App Version:</b></string>
+    <string name="faq_text">
+    <![CDATA[
+    <b>Why isn\'t my mouse with red light working with the app?</b><br>
+    The application generally works very well with mice that use a red light but remember, the mouse cursor will only move a few millimeters. If it doesn\'t work, it may be that the maximum brightness of your phone is not sufficient. Here are some troubleshooting steps you can follow:<br>
+    1. Make sure the brightness level is set to maximum in the application settings.<br>
+    2. If this does not solve the problem, try cleaning the screen surface with a wipe.<br>
+    3. You can also activate the vibration mode if the previous actions did not fix the problem.<br>
+    If despite these checks, the problem persists, try using another red light mouse or another phone to determine the source of the problem.<br><br>
+
+    <b>Why isn\'t my mouse with invisible light working with the app?</b><br>
+    The application tends to malfunction with mice that use an invisible light. However, here are some checks you can perform:<br>
+    - Make sure the vibration mode is activated in the application settings. If this mode is activated but it does not work, it may be that the vibrations of your phone are not strong enough.<br>
+    - If your phone has a protective case, try to remove it. Protective cases tend to dampen vibrations. Also, it is better to place the phone on a hard surface, as soft surfaces can also dampen vibrations.<br>
+    - Experiment with different phone positions. Typically, positioning your mouse perpendicular to your phone gives better results.<br>
+    If despite these checks, it still does not work, it would be better to change the mouse and opt for a mouse that uses a red light. These mice are not very expensive, you can find them second-hand for 1 or 2 euros/dollars.<br><br>
+
+    <b>How do the advanced settings work?</b><br>
+    - "Vibration": Enable or disable vibration mode.<br>
+    - "Brightness Level": Set the maximum brightness when the app wakes up (do not reduce too much or the app will not work).<br>
+    - "Animation": Select the desired animation type Blocks/Stripes. Usually, the Blocks animation works better, but for some mice, it seems that the Stripes animation is better.<br>
+    - "Pause Duration": Set the delay between 2 scrollings/vibrations.<br>
+    - "Stealth / Random Mode": Enable a random delay between 2 scrollings/vibrations. The delay will be between 0 and "Wake up interval" value set above. This function is useful to avoid the usage of mouse mover to be detected.<br><br>
+
+    <b>Can I use Mouse Mover in a professional environment?</b><br>
+    Do not use this app if it conflicts with your employer\'s policies.<br><br>
+
+    <b>After thoroughly reading the FAQ, a question remains. Is it possible to contact you?</b><br>
+    Yes, I will strive to assist you. You can send me an email through the main menu (by clicking in the upper right corner). I kindly ask for your patience, as I manage this project during my free time, alongside my job and other commitments.
+    ]]>
+    </string>
+    <string name="privacy_policy_text">We value your privacy. This application does not collect, store, or share any personal information. All operations are performed locally on your device.</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="category_timers">Timers</string>
+    <string name="active_duration_title">Activity duration</string>
+    <string name="active_duration_summary">From 1 to 20 seconds</string>
+    <string name="seconds_abbreviation_single">sec</string>
+    <string name="pause_duration_title">Pause duration</string>
+    <string name="pause_duration_summary">From 0 to 30 minutes</string>
+    <string name="minutes_abbreviation">min</string>
+    <string name="seconds_abbreviation">sec</string>
+
+    <string name="category_main_settings">Main settings</string>
+    <string name="vibration_title">Enable/disable vibration</string>
+    <string name="brightness_title">Screen brightness</string>
+
+    <string name="category_personalization">Personalization</string>
+    <string name="animation_style_title">Animation selection (background)</string>
+    <string name="language_title">Language</string>
+    <string name="speed_title">Background movement speed</string>
+    <string name="speed_summary">Current speed: %d px/sec</string>
+
+    <string name="rate_dialog_title">Rate Mouse Mover</string>
+    <string name="rate_dialog_message">If you enjoy using this app, would you mind taking a moment to rate it? Thanks for your support!</string>
+    <string name="rate_dialog_rate_now">Rate Now</string>
+    <string name="rate_dialog_later">Later</string>
+    <string name="rate_dialog_no_thanks">No, Thanks</string>
+</resources>

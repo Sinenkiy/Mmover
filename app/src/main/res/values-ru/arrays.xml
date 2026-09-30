@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="animation_entries">
+        <item>Блоки (маленькие)</item>
+        <item>Блоки (средние)</item>
+        <item>Блоки (крупные)</item>
+        <item>Полосы</item>
+    </string-array>
+
+    <string-array name="animation_values">
+        <item>background_blocks_small</item>
+        <item>background_blocks_medium</item>
+        <item>background_blocks_large</item>
+        <item>background_stripes</item>
+    </string-array>
+
+    <string-array name="language_entries">
+        <item>English</item>
+        <item>Русский</item>
+        <item>Deutsch</item>
+        <item>Français</item>
+    </string-array>
+
+    <string-array name="language_values">
+        <item>en</item>
+        <item>ru</item>
+        <item>de</item>
+        <item>fr</item>
+    </string-array>
+</resources>

@@ -1,0 +1,131 @@
+<resources>
+    <string name="app_name">Mouse Mover</string>
+    <string name="start_button">Démarrer</string>
+
+    <string name="start_screen_title"><b>Note de compatibilité :</b></string>
+
+    <string name="start_screen_description"><![CDATA[
+    <font color="#FF3B30"><b>Souris à lumière rouge uniquement.</b></font> <font color="#000000">Cette application fonctionne uniquement avec des souris utilisant un capteur optique rouge visible. Les souris à lumière infrarouge ou laser ne sont pas compatibles.<br/><br/>
+    <b>Un problème ?</b><br/>
+    - Gardez l’écran de téléphone <b>parfaitement propre</b><br/>
+    - Dans de rares cas, un <b>film protecteur</b> peut empêcher la souris de fonctionner correctement</font>
+    ]]>
+    </string>
+
+    <string name="start_screen_description_legacy"><b>Souris à lumière rouge uniquement.</b> Cette application fonctionne uniquement avec des souris utilisant un capteur optique rouge visible. Les souris à lumière infrarouge ou laser ne sont pas compatibles.\n\n
+        <b>Un problème ?</b>\n
+        - Gardez l’écran de téléphone <b>parfaitement propre</b>\n
+        - Dans de rares cas, un <b>film protecteur</b> peut empêcher la souris de fonctionner correctement</string>
+
+    <string name="app_release_notes"><b>Comment utiliser l’application :</b>\n- Appuyez sur <b>Lecture</b> pour lancer le mouvement\n- Appuyez sur <b>Arrêt</b> pour l’interrompre\n- L’application fait des pauses automatiquement entre les périodes d’activité\n- Consultez les <b>Paramètres</b> pour personnaliser le comportement</string>
+
+    <string name="main_screen_title_off">Mouse Mover | ARRÊT</string>
+    <string name="main_screen_title_on">Mouse Mover | MARCHE</string>
+    <string name="main_screen_title_waiting">Mouse Mover | </string>
+
+    <string name="stealth_mode_switch">Mode furtif</string>
+    <string name="stealth_mode_info">Désactivez le mode furtif pour modifier les minuteries</string>
+    <string name="stealth_dialog_title">Mode furtif</string>
+    <string name="stealth_dialog_message">Ce mode randomise les intervalles de mouvement, rendant le Mouse Mover pratiquement indétectable pour les systèmes de surveillance.\n\nRegardez une publicité vidéo pour activer ce mode toute la journée.</string>
+
+    <string name="stealth">Furtif</string>
+    <string name="regular">Normal</string>
+    <string name="mode_change_to">Mode changé en</string>
+
+    <string name="play_pause_button_description">Lecture ou Pause</string>
+
+    <string name="power_saving_mode_text">Mode économie d’énergie activé\nAttente <b>%1$02d:%2$02d</b>\navant la prochaine activité\n%3$s</string>
+
+    <string name="mode_normal_label">Mode normal</string>
+    <string name="mode_stealth_label">Mode furtif</string>
+
+    <string name="options_button">Options</string>
+    <string name="back_button">Retour</string>
+    <string name="menu_contact">Nous contacter</string>
+    <string name="menu_disclaimer">Avertissement</string>
+    <string name="menu_share">Partager</string>
+    <string name="menu_faq">FAQ</string>
+    <string name="menu_privacy_settings">Paramètres de confidentialité</string>
+    <string name="menu_privacy_policy">Politique de confidentialité</string>
+
+    <string name="privacy_not_applicable_title">Paramètres de confidentialité</string>
+    <string name="privacy_not_applicable_message">Dans votre région, aucune configuration particulière n’est requise. Vous pouvez utiliser l’application normalement.</string>
+
+    <string name="menu_settings">Paramètres</string>
+
+    <string name="email_feedback_subject">Commentaires sur l’application Mouse Mover</string>
+    <string name="email_chooser_title">Envoyer un e-mail…</string>
+    <string name="email_client_not_found">Aucune application e-mail installée.</string>
+
+    <string name="share_app_text">Découvrez cette super application : %1$s</string>
+
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Annuler</string>
+
+    <string name="rewarded_ad_not_ready">La publicité n’est pas encore prête. Réessayez plus tard.</string>
+
+    <string name="disclaimer_text">Avertissement : Cette application est destinée uniquement au divertissement et à la commodité. Le développeur décline toute responsabilité quant à ses conséquences…</string>
+
+    <string name="app_version_prefix"><b>Version :</b></string>
+
+    <string name="faq_text"><![CDATA[
+    <b>Pourquoi ma souris à lumière rouge ne fonctionne-t-elle pas ?</b><br>
+    L’application fonctionne généralement bien, mais le curseur ne bouge que de quelques millimètres. Si cela ne fonctionne pas :<br>
+    1. Mettez la luminosité au maximum.<br>
+    2. Nettoyez soigneusement l’écran.<br>
+    3. Activez les vibrations si nécessaire.<br><br>
+
+    <b>Pourquoi ma souris à lumière invisible ne fonctionne-t-elle pas ?</b><br>
+    Les capteurs invisibles fonctionnent mal. Vérifiez :<br>
+    - Mode vibration activé.<br>
+    - Retirez la coque du téléphone.<br>
+    - Utilisez une surface dure.<br>
+    - Essayez différentes positions.<br>
+    Sinon, utilisez une souris à lumière rouge.<br><br>
+
+    <b>Comment fonctionnent les réglages avancés ?</b><br>
+    - « Vibration » : activer/désactiver.<br>
+    - « Luminosité » : luminosité maximale lors de l’activation.<br>
+    - « Animation » : Blocks/Stripes.<br>
+    - « Durée de pause » : temps entre deux mouvements.<br>
+    - « Mode furtif/Aléatoire » : délais aléatoires pour éviter la détection.<br><br>
+
+    <b>Puis-je utiliser Mouse Mover au travail ?</b><br>
+    Ne l’utilisez pas si cela viole les règles de votre entreprise.<br><br>
+
+    <b>Puis-je vous contacter ?</b><br>
+    Oui, via le menu principal.
+    ]]></string>
+
+    <string name="privacy_policy_text">Nous respectons votre vie privée. Cette application ne collecte ni ne partage aucune donnée personnelle. Tout fonctionne localement sur votre appareil.</string>
+
+    <string name="settings_title">Paramètres</string>
+    <string name="category_timers">Minuteries</string>
+
+    <string name="active_duration_title">Durée d’activité</string>
+    <string name="active_duration_summary">De 1 à 20 secondes</string>
+
+    <string name="seconds_abbreviation_single">s</string>
+
+    <string name="pause_duration_title">Durée de pause</string>
+    <string name="pause_duration_summary">De 0 à 30 minutes</string>
+
+    <string name="minutes_abbreviation">min</string>
+    <string name="seconds_abbreviation">s</string>
+
+    <string name="category_main_settings">Paramètres principaux</string>
+    <string name="vibration_title">Vibration</string>
+    <string name="brightness_title">Luminosité de l’écran</string>
+
+    <string name="category_personalization">Personnalisation</string>
+    <string name="animation_style_title">Style d’animation (arrière-plan)</string>
+    <string name="language_title">Langue</string>
+    <string name="speed_title">Vitesse de mouvement</string>
+    <string name="speed_summary">Vitesse actuelle : %d px/s</string>
+
+    <string name="rate_dialog_title">Noter Mouse Mover</string>
+    <string name="rate_dialog_message">Si vous appréciez cette application, pourriez-vous prendre un moment pour la noter ? Merci pour votre soutien !</string>
+    <string name="rate_dialog_rate_now">Noter maintenant</string>
+    <string name="rate_dialog_later">Plus tard</string>
+    <string name="rate_dialog_no_thanks">Non merci</string>
+</resources>

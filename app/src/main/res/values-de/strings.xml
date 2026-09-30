@@ -1,0 +1,131 @@
+<resources>
+    <string name="app_name">Mouse Mover</string>
+    <string name="start_button">Start</string>
+
+    <string name="start_screen_title"><b>Kompatibilitätshinweis:</b></string>
+
+    <string name="start_screen_description"><![CDATA[
+    <font color="#FF3B30"><b>Nur rote Lichtmaus.</b></font> <font color="#000000">Diese App funktioniert nur mit Mäusen, die einen sichtbaren roten optischen Sensor verwenden. Mäuse mit Infrarot- oder Lasersensoren werden nicht unterstützt.<br/><br/>
+    <b>Hast du Probleme?</b><br/>
+    - Halte dein Telefonbildschirm <b>absolut sauber</b><br/>
+    - In seltenen Fällen kann eine <b>Displayschutzfolie</b> die Mausbewegung beeinträchtigen</font>
+    ]]>
+    </string>
+
+    <string name="start_screen_description_legacy"><b>Nur rote Lichtmaus.</b> Diese App funktioniert nur mit Mäusen, die einen sichtbaren roten optischen Sensor verwenden. Mäuse mit Infrarot- oder Lasersensoren werden nicht unterstützt.\n\n
+        <b>Hast du Probleme?</b>\n
+        - Halte dein Bildschirm <b>absolut sauber</b>\n
+        - In seltenen Fällen kann eine <b>Displayschutzfolie</b> die Mausbewegung beeinträchtigen</string>
+
+    <string name="app_release_notes"><b>So verwendest du die App:</b>\n- Drücke <b>Play</b>, um die Hintergrundbewegung zu starten\n- Drücke <b>Stop</b>, um sie zu beenden\n- Die App macht automatisch Pausen zwischen Aktivitätsphasen\n- In den <b>Einstellungen</b> kannst du das Verhalten anpassen</string>
+
+    <string name="main_screen_title_off">Mouse Mover | AUS</string>
+    <string name="main_screen_title_on">Mouse Mover | EIN</string>
+    <string name="main_screen_title_waiting">Mouse Mover | </string>
+
+    <string name="stealth_mode_switch">Stealth-Modus</string>
+    <string name="stealth_mode_info">Deaktiviere Stealth-Modus, um Timer einzustellen</string>
+    <string name="stealth_dialog_title">Stealth-Modus</string>
+    <string name="stealth_dialog_message">Dieser Modus randomisiert die Mausbewegungsintervalle, sodass Aktivitätserkennungssysteme den Mouse Mover praktisch nicht erkennen können.\n\nSchau dir eine Videoanzeige an, um diesen Modus den ganzen Tag zu aktivieren.</string>
+
+    <string name="stealth">Stealth</string>
+    <string name="regular">Normal</string>
+    <string name="mode_change_to">Modus geändert zu</string>
+
+    <string name="play_pause_button_description">Play oder Pause</string>
+
+    <string name="power_saving_mode_text">Energiesparen aktiviert\nWarten <b>%1$02d:%2$02d</b>\nbis zur nächsten Aktivität\n%3$s</string>
+
+    <string name="mode_normal_label">Normaler Modus</string>
+    <string name="mode_stealth_label">Stealth-Modus</string>
+
+    <string name="options_button">Optionen</string>
+    <string name="back_button">Zurück</string>
+    <string name="menu_contact">Kontakt</string>
+    <string name="menu_disclaimer">Haftungsausschluss</string>
+    <string name="menu_share">Teilen</string>
+    <string name="menu_faq">FAQ</string>
+    <string name="menu_privacy_settings">Datenschutzeinstellungen</string>
+    <string name="menu_privacy_policy">Datenschutzrichtlinie</string>
+
+    <string name="privacy_not_applicable_title">Datenschutzeinstellungen</string>
+    <string name="privacy_not_applicable_message">Für deine Region sind keine besonderen Datenschutzeinstellungen erforderlich. Du kannst die App wie gewohnt verwenden.</string>
+
+    <string name="menu_settings">Einstellungen</string>
+
+    <string name="email_feedback_subject">Feedback zur Mouse Mover App</string>
+    <string name="email_chooser_title">E-Mail senden…</string>
+    <string name="email_client_not_found">Keine E-Mail-Apps installiert.</string>
+
+    <string name="share_app_text">Probiere diese coole App aus: %1$s</string>
+
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Abbrechen</string>
+
+    <string name="rewarded_ad_not_ready">Anzeige noch nicht geladen. Bitte später erneut versuchen.</string>
+
+    <string name="disclaimer_text">Haftungsausschluss: Diese App dient nur zu Unterhaltungs- und Komfortzwecken. Der Entwickler übernimmt keine Verantwortung für die Folgen ihrer Verwendung…</string>
+
+    <string name="app_version_prefix"><b>App-Version:</b></string>
+
+    <string name="faq_text"><![CDATA[
+    <b>Warum funktioniert meine Maus mit rotem Licht nicht?</b><br>
+    Die App funktioniert in der Regel gut mit roten Lichtmäusen, aber der Cursor bewegt sich nur wenige Millimeter. Wenn sie nicht reagiert, könnte deine Bildschirmhelligkeit nicht ausreichen. Versuche Folgendes:<br>
+    1. Stelle im App-Menü die Helligkeit auf Maximum.<br>
+    2. Reinige den Bildschirm gründlich.<br>
+    3. Aktiviere die Vibrationsfunktion.<br><br>
+
+    <b>Warum funktioniert meine Maus mit unsichtbarem Licht nicht?</b><br>
+    Unsichtbare Sensoren funktionieren oft nicht zuverlässig. Prüfe:<br>
+    - Vibrationsmodus einschalten.<br>
+    - Handyhülle entfernen.<br>
+    - Gerät auf eine harte Oberfläche legen.<br>
+    - Verschiedene Positionen ausprobieren.<br>
+    Falls es weiterhin nicht funktioniert, verwende eine Maus mit rotem Licht (kosten meist sehr wenig).<br><br>
+
+    <b>Wie funktionieren die erweiterten Einstellungen?</b><br>
+    - „Vibration”: Ein/Aus.<br>
+    - „Helligkeit”: Maximalhelligkeit beim Aktivieren.<br>
+    - „Animation”: Blocks/Stripes auswählen.<br>
+    - „Pausezeit”: Zeit zwischen zwei Bewegungen.<br>
+    - „Stealth/Random Mode”: Zufällige Pausen zur besseren Erkennungssicherheit.<br><br>
+
+    <b>Darf ich Mouse Mover beruflich verwenden?</b><br>
+    Verwende die App nicht, wenn dein Arbeitgeber dies verbietet.<br><br>
+
+    <b>Kann ich euch kontaktieren?</b><br>
+    Ja, über das Hauptmenü kannst du eine E-Mail senden.
+    ]]></string>
+
+    <string name="privacy_policy_text">Wir respektieren deine Privatsphäre. Diese App sammelt, speichert oder überträgt keinerlei persönliche Daten. Alle Funktionen werden ausschließlich lokal auf deinem Gerät ausgeführt.</string>
+
+    <string name="settings_title">Einstellungen</string>
+    <string name="category_timers">Timer</string>
+
+    <string name="active_duration_title">Aktivitätsdauer</string>
+    <string name="active_duration_summary">1 bis 20 Sekunden</string>
+
+    <string name="seconds_abbreviation_single">Sek</string>
+
+    <string name="pause_duration_title">Pausendauer</string>
+    <string name="pause_duration_summary">0 bis 30 Minuten</string>
+
+    <string name="minutes_abbreviation">Min</string>
+    <string name="seconds_abbreviation">Sek</string>
+
+    <string name="category_main_settings">Haupteinstellungen</string>
+    <string name="vibration_title">Vibration ein/aus</string>
+    <string name="brightness_title">Bildschirmhelligkeit</string>
+
+    <string name="category_personalization">Personalisierung</string>
+    <string name="animation_style_title">Animationsauswahl (Hintergrund)</string>
+    <string name="language_title">Sprache</string>
+    <string name="speed_title">Hintergrundgeschwindigkeit</string>
+    <string name="speed_summary">Aktuelle Geschwindigkeit: %d px/s</string>
+
+    <string name="rate_dialog_title">Mouse Mover bewerten</string>
+    <string name="rate_dialog_message">Gefällt dir die App? Bitte nimm dir einen Moment Zeit, sie zu bewerten. Danke für deine Unterstützung!</string>
+    <string name="rate_dialog_rate_now">Jetzt bewerten</string>
+    <string name="rate_dialog_later">Später</string>
+    <string name="rate_dialog_no_thanks">Nein, danke</string>
+</resources>

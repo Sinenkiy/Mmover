@@ -1,0 +1,113 @@
+<resources>
+    <string name="app_name">Mouse Mover</string>
+    <string name="start_button">Старт</string>
+
+    <string name="start_screen_title"><b>Важно о совместимости:</b></string>
+    <string name="start_screen_description"><![CDATA[
+    <font color="#FF3B30"><b>Необходима мышь с красной подсветкой.</b></font> <font color="#000000">Приложение работает только с мышами, использующими видимый красный свет. Мыши с инфракрасными или лазерными сенсорами не поддерживаются.<br/><br/>
+    <b>Возникли проблемы?</b><br/>
+    - Держите экран телефона в <b>идеальной чистоте</b><br/>
+    - В редких случаях <b>защитное стекло</b> телефона может мешать правильной работе мыши</font>
+    ]]>
+    </string>
+    <string name="start_screen_description_legacy"><b>Необходима мышь с красной подсветкой.</b>Приложение работает только с мышами, использующими видимый красный свет. Мыши с инфракрасными или лазерными сенсорами не поддерживаются.\n\n
+        <b>Возникли проблемы?</b>\n
+        - Держите экран телефона в <b>идеальной чистоте</b>\n
+        - В редких случаях <b>защитное стекло</b> телефона может мешать правильной работе мыши</string>
+    <string name="app_release_notes"><b>Как пользоваться приложением:</b>\n- Нажмите кнопку <b>Старт</b> для запуска движения\n- Нажмите кнопку <b>Стоп</b> чтобы остановить\n- Между активностями приложение встает на паузу\n- В разделе <b>Настройки</b> можно поменять параметры</string>
+    <string name="main_screen_title_off">Mouse Mover | ВЫКЛ</string>
+    <string name="main_screen_title_on">Mouse Mover | ВКЛ</string>
+    <string name="main_screen_title_waiting">Mouse Mover | </string>
+    <string name="stealth_mode_switch">Стелс-режим</string>
+    <string name="stealth_mode_info">Отключите стелс-режим, чтобы настроить таймеры</string>
+    <string name="stealth_dialog_title">Стелс-режим</string>
+    <string name="stealth_dialog_message">Этот режим делает интервалы движения мыши случайными, что делает обнаружение почти невозможным для систем мониторинга.\n\nПосмотрите видео, чтобы использовать этот режим весь день.</string>
+    <string name="stealth">Стелс</string>
+    <string name="regular">Обычный</string>
+    <string name="mode_change_to">Режим изменен на</string>
+    <string name="play_pause_button_description">Старт или Пауза</string>
+    <string name="power_saving_mode_text">Экономия батареи\nЖду <b>%1$02d:%2$02d</b>\nдо следующей активности\n%3$s</string>
+    <string name="mode_normal_label">Обычный режим</string>
+    <string name="mode_stealth_label">Стелс режим</string>
+
+    <string name="options_button">Опции</string>
+    <string name="back_button">Назад</string>
+    <string name="menu_contact">Связаться с нами</string>
+    <string name="menu_disclaimer">Дисклеймер</string>
+    <string name="menu_share">Поделиться</string>
+    <string name="menu_faq">ЧаВо</string>
+    <string name="menu_privacy_settings">Настройки приватности</string>
+    <string name="menu_privacy_policy">Политика приватности</string>
+    <string name="privacy_not_applicable_title">Настройки приватности</string>
+    <string name="privacy_not_applicable_message">Для вашего региона не предусмотрено специальных настроек конфиденциальности. Вы можете продолжать пользоваться приложением как обычно.</string>
+    <string name="menu_settings">Настройки</string>
+
+    <string name="email_feedback_subject">Отзыв о приложении Mouse Mover</string>
+    <string name="email_chooser_title">Отправить письмо…</string>
+    <string name="email_client_not_found">Не найдено ни одного почтового приложения.</string>
+    <string name="share_app_text">Попробуй это классное приложение: %1$s</string>
+
+    <string name="common_ok">ОК</string>
+    <string name="common_cancel">Отмена</string>
+    <string name="rewarded_ad_not_ready">Реклама ещё не загружена, попробуйте позже.</string>
+
+    <string name="disclaimer_text">Дисклеймер</string>
+    <string name="app_version_prefix"><b>Версия приложения:</b></string>
+    <string name="faq_text">
+    <![CDATA[
+    <b>Почему моя мышь с красным светом не работает с приложением?</b><br>
+    Приложение обычно очень хорошо работает с мышами, использующими красный свет, но помните, что курсор мыши будет двигаться всего на несколько миллиметров. Если это не работает, возможно, максимальной яркости вашего телефона недостаточно. Вот несколько шагов по устранению неполадок, которые вы можете выполнить:<br>
+    1. Убедитесь, что в настройках приложения установлен максимальный уровень яркости.<br>
+    2. Если это не решает проблему, попробуйте очистить поверхность экрана салфеткой.<br>
+    3. Вы также можете активировать режим вибрации, если предыдущие действия не помогли.<br>
+    Если, несмотря на эти проверки, проблема сохраняется, попробуйте использовать другую мышь с красным светом или другой телефон, чтобы определить источник проблемы.<br><br>
+
+    <b>Почему моя мышь с невидимым светом не работает с приложением?</b><br>
+    Приложение, как правило, работает некорректно с мышами, использующими невидимый свет. Однако, вот несколько проверок, которые вы можете выполнить:<br>
+    - Убедитесь, что в настройках приложения активирован режим вибрации. Если этот режим активирован, но не работает, возможно, вибрации вашего телефона недостаточно сильны.<br>
+    - Если на вашем телефоне есть защитный чехол, попробуйте его снять. Защитные чехлы, как правило, ослабляют вибрации. Также лучше размещать телефон на твердой поверхности, так как мягкие поверхности тоже могут ослаблять вибрации.<br>
+    - Поэкспериментируйте с различными положениями телефона. Обычно, расположение мыши перпендикулярно телефону дает лучшие результаты.<br>
+    Если, несмотря на эти проверки, это все равно не работает, лучше сменить мышь и выбрать ту, которая использует красный свет. Такие мыши не очень дорогие, их можно найти б/у за 200-300 рублей.<br><br>
+
+    <b>Как работают расширенные настройки?</b><br>
+    - "Вибрация": Включить или выключить режим вибрации.<br>
+    - "Уровень яркости": Установить максимальную яркость, когда приложение "просыпается" (не уменьшайте слишком сильно, иначе приложение не будет работать).<br>
+    - "Анимация": Выбрать желаемый тип анимации Болки/Полоски. Обычно анимация Блоки работает лучше, но для некоторых мышей, похоже, лучше подходит Полоски.<br>
+    - "Длительность паузы": Установить задержку между двумя прокрутками или вибрациями.<br>
+    - "Стелс / Случайный режим": Включить случайную задержку между двумя прокрутками или вибрациями. Задержка будет между 0 и значением "Интервал пробуждения", установленным выше. Эта функция полезна, чтобы избежать обнаружения системами мониторинга.<br><br>
+
+    <b>Могу ли я использовать Mouse <Mover> в профессиональной среде?</b><br>
+    Не используйте это приложение, если это противоречит политике вашего работодателя.<br><br>
+
+    <b>После внимательного прочтения ЧаВо остался вопрос. Возможно ли с вами связаться?</b><br>
+    Да, я постараюсь вам помочь. Вы можете отправить мне электронное письмо через главное меню (нажав в правом верхнем углу). Прошу вашего терпения, так как я занимаюсь этим проектом в свободное время, параллельно с основной работой и другими обязательствами.
+    ]]>
+    </string>
+    <string name="privacy_policy_text">Политика.</string>
+
+    <string name="settings_title">Настройки</string>
+    <string name="category_timers">Таймеры</string>
+    <string name="active_duration_title">Длительность режима активности</string>
+    <string name="active_duration_summary">От 1 до 15 секунд</string>
+    <string name="seconds_abbreviation_single">сек</string>
+    <string name="pause_duration_title">Длительность паузы</string>
+    <string name="pause_duration_summary">От 0 до 30 минут</string>
+    <string name="minutes_abbreviation">мин</string>
+    <string name="seconds_abbreviation">сек</string>
+
+    <string name="category_main_settings">Основные настройки</string>
+    <string name="vibration_title">Вкл/выкл вибрации</string>
+    <string name="brightness_title">Яркость экрана</string>
+
+    <string name="category_personalization">Персонализация</string>
+    <string name="animation_style_title">Выбор анимации (фона)</string>
+    <string name="speed_title">Скорость движения фона</string>
+    <string name="speed_summary">Текущая скорость: %d пикс/сек</string>
+    <string name="language_title">Язык</string>
+
+    <string name="rate_dialog_title">Оцените Mouse Mover</string>
+    <string name="rate_dialog_message">Если вам нравится приложение, не могли бы вы уделить момент и оценить его? Спасибо за поддержку!</string>
+    <string name="rate_dialog_rate_now">Оценить</string>
+    <string name="rate_dialog_later">Позже</string>
+    <string name="rate_dialog_no_thanks">Нет, спасибо</string>
+</resources>
