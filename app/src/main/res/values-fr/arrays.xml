@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="animation_entries">
-        <item>Blocs (petits)</item>
-        <item>Blocs (moyens)</item>
-        <item>Blocs (grands)</item>
-        <item>Rayures</item>
+        <item>Parasites</item>
+        <item>Îles</item>
+        <item>Carrelage</item>
+        <item>Code-barres</item>
+        <item>Labyrinthe</item>
     </string-array>
 
     <string-array name="animation_values">
-        <item>background_blocks_small</item>
-        <item>background_blocks_medium</item>
-        <item>background_blocks_large</item>
-        <item>background_stripes</item>
+        <item>generated_contrast_noise</item>
+        <item>generated_perlin_small</item>
+        <item>generated_mosaic</item>
+        <item>generated_stripes</item>
+        <item>generated_broken_grid</item>
     </string-array>
 
     <string-array name="language_entries">

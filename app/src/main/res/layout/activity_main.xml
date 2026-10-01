@@ -42,12 +42,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <RelativeLayout
+        <FrameLayout
             android:id="@+id/titleBar"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:paddingTop="0dp"
-            android:background="@color/super_blue"
+            android:background="@color/glass_header"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
@@ -56,28 +56,40 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="18dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
-
-                <ImageButton
-                    android:id="@+id/backButton"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_arrow_back"
-                    android:contentDescription="@string/back_button" />
 
                 <TextView
                     android:id="@+id/titleTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/main_screen_title_off"
+                    android:gravity="start|center_vertical"
+                    android:maxLines="1"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeMaxTextSize="20sp"
+                    android:text="@string/app_name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/glass_header_text" />
+
+                <ImageButton
+                    android:id="@+id/settingsButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_settings"
+                    app:tint="@color/glass_header_text"
+                    android:contentDescription="@string/menu_settings" />
+
+                <ImageButton
+                    android:id="@+id/backButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_help_circle"
+                    app:tint="@color/glass_header_text"
+                    android:contentDescription="@string/main_help" />
 
                 <ImageButton
                     android:id="@+id/optionsButton"
@@ -85,85 +97,124 @@
                     android:layout_height="48dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_menu_more"
+                    app:tint="@color/glass_header_text"
                     android:contentDescription="@string/options_button" />
 
             </LinearLayout>
-        </RelativeLayout>
+        </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/topAdArea"
-            android:layout_width="0dp"
+            android:id="@+id/ad_view_container_top"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/titleBar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" >
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            <FrameLayout
-                android:id="@+id/BannerViewTop"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:background="@android:color/transparent" />
-
-            <FrameLayout
-                android:id="@+id/topNativeContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/titleBar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-        </FrameLayout>
-
-        <!-- Переключатель — под баннером -->
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/modeSwitch"
+        <LinearLayout
+            android:id="@+id/modePanel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="#C8000000"
-            android:textSize="18sp"
-            android:padding="12dp"
-            android:textStyle="bold"
-            app:trackTint="#99FFFFFF"
-            android:text="@string/stealth_mode_switch"
-            android:textColor="@color/light_blue"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/glass_panel"
+            android:elevation="4dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="4dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/topAdArea" />
+            app:layout_constraintTop_toBottomOf="@id/ad_view_container_top">
 
-        <!-- НИЖНИЙ БАННЕР: контейнер прямо над bottomSafeBar -->
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/modeSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:minHeight="48dp"
+                android:textSize="14sp"
+                android:text="@string/stealth_mode_switch"
+                android:textColor="@color/glass_text"
+                app:switchPadding="10dp"
+                app:thumbTint="@color/glass_switch_thumb"
+                app:trackTint="@color/glass_switch_track" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="10dp"
+                android:background="@color/glass_edge" />
+
+            <ImageButton
+                android:id="@+id/removeAdsButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_ads_off"
+                app:tint="@color/glass_text"
+                android:contentDescription="@string/remove_ads_title" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/controlsPanel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="4dp"
+            android:padding="8dp"
+            android:orientation="vertical"
+            android:background="@drawable/glass_panel"
+            android:elevation="4dp"
+            app:layout_constraintWidth_max="420dp"
+            app:layout_constraintBottom_toTopOf="@id/ad_view_container_bottom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/modeDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                android:textColor="@color/glass_secondary_text"
+                android:textSize="12sp"
+                tools:text="Движение 5 с · Пауза 03:00" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/playPauseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="52dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/motion_start"
+                android:textAllCaps="false"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:letterSpacing="0"
+                android:textColor="@color/glass_action_text"
+                app:backgroundTint="@color/super_blue"
+                app:cornerRadius="18dp"
+                app:icon="@drawable/ic_media_play2"
+                app:iconGravity="textStart"
+                app:iconSize="28dp"
+                app:iconTint="@color/glass_action_text" />
+        </LinearLayout>
+
         <FrameLayout
-            android:id="@+id/BannerViewBottom"
-            android:layout_width="0dp"
+            android:id="@+id/ad_view_container_bottom"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/bottomSafeBar" />
-
-        <!-- FAB — теперь висит над нижним баннером -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/playPauseButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:maxImageSize="42dp"
-            android:contentDescription="@string/play_pause_button_description"
-            android:src="@drawable/ic_media_play2"
-            android:backgroundTint="@color/super_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/BannerViewBottom" />
-
-        <!-- НИЖНЯЯ ПОЛОСА: будет высотой = высоте системной навигации -->
-        <View
-            android:id="@+id/bottomSafeBar"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:minHeight="@dimen/bottom_safe_bar_min_height"
-            android:background="@android:color/transparent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

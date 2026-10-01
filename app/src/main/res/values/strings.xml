@@ -110,4 +110,6 @@
     <string name="rate_dialog_rate_now">Rate Now</string>
     <string name="rate_dialog_later">Later</string>
     <string name="rate_dialog_no_thanks">No, Thanks</string>
+    <string name="stealth_watch_ad">Watch ad</string>
+    <string name="stealth_not_now">Not now</string>
 </resources>

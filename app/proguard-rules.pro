@@ -19,3 +19,5 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+# Preserve useful stack traces; SDK consumer rules are provided by its AAR.
+-keepattributes SourceFile,LineNumberTable

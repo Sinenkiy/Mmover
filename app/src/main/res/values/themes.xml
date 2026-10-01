@@ -9,41 +9,39 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="android:statusBarColor">@color/super_blue</item>
 
-        <!-- базово используем твой светлый стиль меню -->
+        <!-- Popup menu follows the current light/dark palette. -->
         <item name="popupMenuStyle">@style/MyPopupMenuStyle</item>
     </style>
 
     <style name="MyPopupTextAppearance" parent="TextAppearance.AppCompat.Widget.PopupMenu.Small">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/glass_text</item>
     </style>
 
-    <!-- СТИЛЬ ДЛЯ PopupMenu: белый фон + чёрный текст -->
+    <!-- Rounded popup with theme-aware text and background. -->
     <style name="MyPopupMenuStyle" parent="Widget.AppCompat.PopupMenu">
-        <item name="android:popupBackground">@drawable/popup_menu</item>  <!-- drawable с белым фоном -->
+        <item name="android:popupBackground">@drawable/popup_menu</item>
         <item name="android:itemTextAppearance">@style/MyPopupTextAppearance</item>
     </style>
 
-    <!-- ТЕМА-ОВЕРЛЕЙ ДЛЯ ФОРСА СВЕТЛОГО МЕНЮ -->
-    <style name="AppPopupMenu_ForceLight" parent="ThemeOverlay.AppCompat.Light">
-        <!-- подменяем стиль PopupMenu на наш -->
-        <item name="popupMenuStyle">@style/MyPopupMenuStyle</item>
-    </style>
 
-    <!-- остальное без изменений... -->
     <style name="Theme.MMover.Settings" parent="Theme.MMover">
-        <item name="android:colorBackground">#e6e6e6</item>
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:textColorSecondary">#555555</item>
+        <item name="preferenceFragmentCompatStyle">@style/SettingsPreferenceFragment</item>
+        <item name="colorAccent">@color/settings_accent</item>
+        <item name="colorControlActivated">@color/settings_accent</item>
+        <item name="android:colorBackground">@color/settings_surface</item>
+        <item name="android:statusBarColor">@color/settings_surface</item>
+        <item name="android:textColorPrimary">@color/glass_text</item>
+        <item name="android:textColorSecondary">@color/glass_secondary_text</item>
         <item name="android:spinnerItemStyle">@style/MySpinnerItemStyle</item>
         <item name="android:spinnerDropDownItemStyle">@style/MySpinnerDropDownItemStyle</item>
     </style>
 
     <style name="MySpinnerItemStyle" parent="@style/Widget.AppCompat.TextView.SpinnerItem">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/glass_text</item>
     </style>
 
     <style name="MySpinnerDropDownItemStyle" parent="@style/Widget.AppCompat.DropDownItem.Spinner">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/glass_text</item>
     </style>
 
     <style name="Theme.App.Launcher" parent="Theme.MMover">

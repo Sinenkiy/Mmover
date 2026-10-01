@@ -110,4 +110,6 @@
     <string name="rate_dialog_rate_now">Оценить</string>
     <string name="rate_dialog_later">Позже</string>
     <string name="rate_dialog_no_thanks">Нет, спасибо</string>
+    <string name="stealth_watch_ad">Смотреть рекламу</string>
+    <string name="stealth_not_now">Не сейчас</string>
 </resources>

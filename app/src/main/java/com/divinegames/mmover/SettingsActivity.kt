@@ -1,50 +1,37 @@
-package com.divinegames.mmover // Ваш пакет
+package com.divinegames.mmover
 
-import android.content.Intent
 import android.os.Bundle
+import android.content.res.Configuration
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 
 class SettingsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Preferences are persisted immediately. Return to the caller on every normal exit,
+        // including after recreation for a language change.
+        setResult(RESULT_OK)
 
-        // НАЧАЛО ВСТАВКИ: КОД ДЛЯ ОТСТУПОВ
-        // Получаем корневой контейнер этой активити
         val rootView = findViewById<View>(android.R.id.content)
-
-        // Говорим системе: "Когда будешь рисовать экран, учти размеры системных панелей"
+        WindowInsetsControllerCompat(window, rootView).isAppearanceLightStatusBars =
+            resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK != Configuration.UI_MODE_NIGHT_YES
         ViewCompat.setOnApplyWindowInsetsListener(rootView) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            // Добавляем внутренние отступы (padding):
-            // Сверху — для статус-бара, Снизу — для кнопок навигации
             view.setPadding(view.paddingLeft, systemBars.top, view.paddingRight, systemBars.bottom)
-
             insets
         }
-        // КОНЕЦ ВСТАВКИ
 
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(android.R.id.content, SettingsFragment())
+                .commit()
+        }
+    }
 
-
-        // Вставляем наш фрагмент с настройками в контейнер
-        supportFragmentManager.beginTransaction()
-            .replace(android.R.id.content, SettingsFragment())
-            .commit()
-        // --- НОВАЯ ЛОГИКА ДЛЯ КНОПКИ "НАЗАД" ---
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // Создаем интент для перезапуска приложения через StartActivity
-                val intent = Intent(this@SettingsActivity, StartActivity::class.java)
-
-                // Флаги, которые очищают все предыдущие экраны
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-                // Запускаем!
-                startActivity(intent)
-            }
-        })
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }

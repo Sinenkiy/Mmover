@@ -13,3 +13,9 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Local porting verification outputs (sources and progress remain tracked).
+/artifacts/porting/
+/*.log
+*.apk
+*.aab

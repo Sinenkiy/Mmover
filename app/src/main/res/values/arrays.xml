@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="animation_entries">
-        <item>Blocks (small)</item>
-        <item>Blocks (medium)</item>
-        <item>Blocks (large)</item>
-        <item>Stripes</item>
+        <item>Interference</item>
+        <item>Islands</item>
+        <item>Tiles</item>
+        <item>Barcode</item>
+        <item>Labyrinth</item>
     </string-array>
 
     <string-array name="animation_values">
-        <item>background_blocks_small</item>
-        <item>background_blocks_medium</item>
-        <item>background_blocks_large</item>
-        <item>background_stripes</item>
+        <item>generated_contrast_noise</item>
+        <item>generated_perlin_small</item>
+        <item>generated_mosaic</item>
+        <item>generated_stripes</item>
+        <item>generated_broken_grid</item>
     </string-array>
 
     <string-array name="language_entries">

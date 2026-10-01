@@ -128,4 +128,6 @@
     <string name="rate_dialog_rate_now">Noter maintenant</string>
     <string name="rate_dialog_later">Plus tard</string>
     <string name="rate_dialog_no_thanks">Non merci</string>
+    <string name="stealth_watch_ad">Voir la publicité</string>
+    <string name="stealth_not_now">Pas maintenant</string>
 </resources>

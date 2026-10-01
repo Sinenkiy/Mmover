@@ -1,55 +1,85 @@
 package com.divinegames.mmover
 
 import android.os.Bundle
-import android.text.Html
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.Button
+import androidx.core.text.HtmlCompat
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+import androidx.core.view.isVisible
+import com.divinegames.mmover.databinding.ActivityInfoBinding
+import com.divinegames.mmover.databinding.ItemFaqBinding
 
 class InfoActivity : BaseActivity() {
+    private lateinit var binding: ActivityInfoBinding
+    private val expandedQuestions = mutableSetOf<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_info)
+        binding = ActivityInfoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        applyHelpInsets(binding.root)
 
-        val imageView = findViewById<ImageView>(R.id.infoImageView)
-        val textView = findViewById<TextView>(R.id.infoTextView)
+        val titleResId = intent.getIntExtra("EXTRA_TITLE_RES_ID", R.string.menu_faq)
+        if (titleResId != 0) title = getString(titleResId)
+        binding.infoToolbar.title = title
+        binding.infoToolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
-        // Получаем данные, которые передала MainActivity
-        val imageResId = intent.getIntExtra("EXTRA_IMAGE_RES_ID", 0)
         val textResId = intent.getIntExtra("EXTRA_TEXT_RES_ID", 0)
-        val titleResId = intent.getIntExtra("EXTRA_TITLE_RES_ID", 0)
-
-        // Устанавливаем заголовок экрана
-        if (titleResId != 0) {
-            title = getString(titleResId)
+        val isFaq = textResId == R.string.faq_text
+        binding.faqIntro.isVisible = isFaq
+        binding.faqList.isVisible = isFaq
+        binding.versionText.isVisible = isFaq
+        if (isFaq) {
+            binding.versionText.text = getString(R.string.help_version, BuildConfig.VERSION_NAME)
+            expandedQuestions.addAll(savedInstanceState?.getIntArray("expanded_questions")?.toList().orEmpty())
+            showQuestions()
+        } else {
+            val imageResId = intent.getIntExtra("EXTRA_IMAGE_RES_ID", 0)
+            binding.infoImageView.isVisible = imageResId != 0
+            if (imageResId != 0) binding.infoImageView.setImageResource(imageResId)
+            binding.infoTextView.isVisible = textResId != 0
+            if (textResId != 0) binding.infoTextView.text =
+                HtmlCompat.fromHtml(getString(textResId), HtmlCompat.FROM_HTML_MODE_LEGACY)
         }
+    }
 
-        // Устанавливаем картинку и текст
-        if (imageResId != 0) {
-            imageView.setImageResource(imageResId)
-        }
-
-        // --- Логика для текста (с версией) ---
-        if (textResId != 0) {
-            var finalHtmlText = ""
-
-            // Проверяем, это экран FAQ?
-            if (textResId == R.string.faq_text) {
-                // 1. Получаем версию приложения (напр., "1.03")
-                val versionName = BuildConfig.VERSION_NAME
-                // 2. Получаем наш префикс ("Версия приложения:")
-                val versionPrefix = getString(R.string.app_version_prefix)
-                // 3. Собираем строку
-                val versionString = "$versionPrefix $versionName<br><br>" // <br> это перенос строки в HTML
-                // 4. Добавляем ее в начало текста FAQ
-                finalHtmlText = versionString + getString(R.string.faq_text)
-            } else {
-                // Для других экранов (если они будут) просто показываем текст
-                finalHtmlText = getString(textResId)
+    private fun showQuestions() {
+        val questions = resources.getStringArray(R.array.faq_questions)
+        val answers = resources.getStringArray(R.array.faq_answers)
+        questions.forEachIndexed { index, question ->
+            val row = ItemFaqBinding.inflate(layoutInflater, binding.faqList, false)
+            row.questionText.text = question
+            row.questionButton.contentDescription = question
+            ViewCompat.setAccessibilityDelegate(row.questionButton, object : AccessibilityDelegateCompat() {
+                override fun onInitializeAccessibilityNodeInfo(
+                    host: android.view.View, info: AccessibilityNodeInfoCompat
+                ) {
+                    super.onInitializeAccessibilityNodeInfo(host, info)
+                    info.className = Button::class.java.name
+                }
+            })
+            row.answerText.text = HtmlCompat.fromHtml(answers[index], HtmlCompat.FROM_HTML_MODE_LEGACY).trim()
+            fun render() {
+                val expanded = index in expandedQuestions
+                row.answerText.isVisible = expanded
+                row.expandIcon.rotation = if (expanded) 180f else 0f
+                ViewCompat.setStateDescription(row.questionButton,
+                    getString(if (expanded) R.string.help_expanded else R.string.help_collapsed))
             }
-
-            // Устанавливаем итоговый текст с обработкой HTML-тегов
-            textView.text = Html.fromHtml(finalHtmlText, Html.FROM_HTML_MODE_LEGACY)
+            row.questionButton.setOnClickListener {
+                if (!expandedQuestions.add(index)) expandedQuestions.remove(index)
+                render()
+            }
+            // Repeated row IDs must not share hierarchy state; expansion is saved explicitly.
+            row.root.isSaveFromParentEnabled = false
+            render()
+            binding.faqList.addView(row.root)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putIntArray("expanded_questions", expandedQuestions.toIntArray())
+        super.onSaveInstanceState(outState)
     }
 }

@@ -1,27 +1,37 @@
-// StartActivity.kt — стабильная версия
 package com.divinegames.mmover
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
+
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.text.HtmlCompat
-import androidx.core.view.updateLayoutParams
+
+import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isInvisible
+
 import com.divinegames.mmover.databinding.ActivityOnboardingBinding
 
 class StartActivity : BaseActivity() {
+    companion object {
+        internal const val RETURN_TO_MAIN = "returnToExistingMain"
+    }
 
     private lateinit var binding: ActivityOnboardingBinding
+    private var showingOnboarding = false
+    private var navigated = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (intent.getBooleanExtra(RETURN_TO_MAIN, false)) {
+            // Back from the start screen still exits the task, rather than looping to Main.
+            onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() { finishAffinity() }
+            })
+        }
+
 
         val prefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
-        // 1) Сначала читаем и сразу «сжигаем» флаг force, чтобы он не переиспользовался при поворотах экрана
+        // Consume the Intent flag once; retain the displayed screen in saved state.
         val force = intent.getBooleanExtra("forceOnboarding", false)
         intent.removeExtra("forceOnboarding")
 
@@ -30,9 +40,10 @@ class StartActivity : BaseActivity() {
         val currentVersionCode  = BuildConfig.VERSION_CODE
 
         // 3) Решаем, показывать ли онбординг
-        val shouldShowOnboarding = force || (currentVersionCode > lastSeenVersionCode)
+        showingOnboarding = savedInstanceState?.getBoolean("showing_onboarding")
+            ?: (force || currentVersionCode > lastSeenVersionCode)
 
-        if (!shouldShowOnboarding) {
+        if (!showingOnboarding) {
             // Не показываем — сразу на Main
             goToMainActivity()
             return
@@ -43,102 +54,34 @@ class StartActivity : BaseActivity() {
         setContentView(binding.root)
 
         setupOnboardingUi()
-        applyOnboardingLayoutTweaks()   // твои правки отступов/размеров и т.д.
+        applyHelpInsets(binding.root)
 
-        // 5) Версию запоминаем только при НЕ форс-показе
-        if (!force) {
-            prefs.edit().putInt("lastSeenVersionCode", currentVersionCode).apply()
-        }
     }
 
-    private fun applyOnboardingLayoutTweaks() {
-        if (!this::binding.isInitialized) return
-
-        // 3) ТЕПЕРЬ применяем отступы/размеры (они сохранятся, т.к. layout уже финальный)
-        fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
-
-        val dm = resources.displayMetrics
-        val screenWidthPx = dm.widthPixels
-        val screenHeightDp = (dm.heightPixels / dm.density).toInt()
-
-        // ГРУППЫ ВЫСОТ (подгони пороги под дизайн)
-        val isSmall  = screenHeightDp <650
-        val isMedium = screenHeightDp in 650..780
-        val isLarge  = screenHeightDp >= 780
-
-        // Одинаковый паддинг со всех сторон
-        val paddingAllDp = when {
-            isSmall  -> 5
-            isMedium -> 10
-            else     -> 20  // как в XML
-        }
-        binding.onboardingContainer.setPadding(
-            dp(paddingAllDp), dp(paddingAllDp), dp(paddingAllDp), dp(paddingAllDp)
-        )
-
-        // 1) Верхний margin для "compatibility note" (releaseNotesTextView)
-        binding.titleTextView.updateLayoutParams<ConstraintLayout.LayoutParams> {
-            topMargin = when {
-                isSmall  -> dp(5)
-                isMedium -> dp(15)
-                else     -> dp(30)
-            }
-        }
-
-        // 2) Нижний margin для кнопки Start
-        binding.startButton.updateLayoutParams<ConstraintLayout.LayoutParams> {
-            bottomMargin = when {
-                isSmall  -> dp(20)
-                isMedium -> dp(40)
-                else     -> dp(60)
-            }
-        }
-
-        // Настройка размеров descriptionImageView в зависимости от версии Android
-        val image = binding.descriptionImageView
-
-        val (targetWidthDp, targetHeightDp) = when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> 512 to 336
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> 384 to 252
-            else -> 256 to 168
-        }
-
-        if (isSmall) {
-            // Очень низкие экраны — задаём ЖЁСТКИЙ размер картинки
-            image.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                width  = dp(256)          // подгони под реальный макет
-                height = dp(168)
-            }
-        } else {
-            val desiredWidthPx = dp(targetWidthDp).coerceAtMost(screenWidthPx - dp(48))
-            image.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                width  = desiredWidthPx
-                height = 0 // ВАЖНО: для работы app:layout_constraintDimensionRatio
-                // dimensionRatio задан в XML (512:336) — высота посчитается автоматически
-            }
-        }
-
-        image.requestLayout()
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean("showing_onboarding", showingOnboarding)
+        super.onSaveInstanceState(outState)
     }
 
     private fun setupOnboardingUi() {
-        //MobileAds.initialize(this) {}
-        //findViewById<AdView>(R.id.adViewTop).loadAd(AdRequest.Builder().build())
-        //findViewById<AdView>(R.id.adViewBottom).loadAd(AdRequest.Builder().build())
-
-        // 1. Находим наш TextView
-        val descriptionTextView = findViewById<TextView>(R.id.descriptionTextView)
-
-        // 2. Получаем строку с HTML-тегами
-        val formattedText = getString(R.string.start_screen_description)
-
-        // 3. Превращаем HTML в форматированный текст и устанавливаем его
-        descriptionTextView.text = HtmlCompat.fromHtml(formattedText, HtmlCompat.FROM_HTML_MODE_LEGACY)
-
-
-        val startButton = findViewById<Button>(R.id.startButton)
-        startButton.setOnClickListener {
-            // Когда пользователь нажимает "Старт", мы помечаем, что первый запуск прошел
+        fun updateScrollHint() {
+            // Keep its space when hidden so reaching the end does not change the scroll range.
+            binding.scrollHint.isInvisible = !binding.onboardingScroll.canScrollVertically(1)
+        }
+        binding.onboardingScroll.setOnScrollChangeListener(
+            androidx.core.widget.NestedScrollView.OnScrollChangeListener { _, _, _, _, _ -> updateScrollHint() }
+        )
+        binding.onboardingScroll.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> updateScrollHint() }
+        binding.onboardingScroll.getChildAt(0).addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> updateScrollHint() }
+        binding.scrollHint.setOnClickListener {
+            binding.onboardingScroll.smoothScrollBy(0, binding.onboardingScroll.height * 3 / 4)
+        }
+        binding.faqButton.setOnClickListener {
+            startActivity(Intent(this, InfoActivity::class.java)
+                .putExtra("EXTRA_TITLE_RES_ID", R.string.menu_faq)
+                .putExtra("EXTRA_TEXT_RES_ID", R.string.faq_text))
+        }
+        binding.startButton.setOnClickListener {
             getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
                 .edit()
                 .putInt("lastSeenVersionCode", BuildConfig.VERSION_CODE)
@@ -146,24 +89,16 @@ class StartActivity : BaseActivity() {
             goToMainActivity()
         }
     }
-
     private fun goToMainActivity() {
-        startActivity(Intent(this, MainActivity::class.java))
+        if (navigated) return
+        navigated = true
+        if (!intent.getBooleanExtra(RETURN_TO_MAIN, false)) {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
         finish()
     }
-    override fun onStart() {
-        super.onStart()
-        if (this::binding.isInitialized) applyOnboardingLayoutTweaks()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (this::binding.isInitialized) applyOnboardingLayoutTweaks()
-    }
-
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        setIntent(intent) // чтобы читать новые extras
-        if (this::binding.isInitialized) applyOnboardingLayoutTweaks()
+        setIntent(intent)
     }
 }

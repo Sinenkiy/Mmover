@@ -11,8 +11,8 @@ android {
         applicationId = "com.divinegames.mmover"
         minSdk = 24
         targetSdk = 35
-        versionCode = 104
-        versionName = "1.04"
+        versionCode = 200
+        versionName = "2.00"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -35,6 +35,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -47,6 +48,11 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.coroutines.android)
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
     // Основные библиотеки AndroidX
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.core.ktx)
@@ -56,11 +62,9 @@ dependencies {
     implementation(libs.androidx.preference.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
-    // Google Mobile Ads SDK (AdMob)
-    //implementation(libs.play.services.ads)
 
     // Yandex SDK
-    implementation("com.yandex.android:mobileads:7.17.0") // <-- Используем прямую зависимость для надежности
+    implementation(libs.yandex.ads)
 
     // Тестовые библиотеки
     testImplementation(libs.junit)

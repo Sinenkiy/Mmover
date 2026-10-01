@@ -1,19 +1,11 @@
-package com.divinegames.mmover // Убедись, что это твой пакет
+package com.divinegames.mmover
 
-import android.app.Activity
-import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
-import androidx.core.view.doOnLayout
 import androidx.preference.DropDownPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
-import androidx.recyclerview.widget.RecyclerView
 import java.util.concurrent.TimeUnit
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -47,7 +39,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setupSeekBarListener(
             key = "pause_duration",
             format = "",
-            // Умножаем значение (0-360) на 5, чтобы получить реальные секунды (0-1800)
+            // Умножаем значение (0-180) на 5, чтобы получить реальные секунды (0-900)
             formatter = { value -> formatSecondsToMmSs(value * 5) }
         )
 
@@ -57,19 +49,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
         )
 
         val languagePreference: DropDownPreference? = findPreference("language")
-        // 1. Устанавливаем текущее значение.
-        //    Теперь выпадающий список всегда будет показывать реальный язык приложения.
+
         val currentLanguage = LocaleHelper.getLanguage(requireContext())
         languagePreference?.value = currentLanguage
 
-        // 2. Настраиваем слушатель, который сработает только при РЕАЛЬНОМ изменении.
         languagePreference?.onPreferenceChangeListener =
-            Preference.OnPreferenceChangeListener { _, newValue ->
+            Preference.OnPreferenceChangeListener { pref, newValue ->
                 val newLanguage = newValue as String
-                // Наша проверка теперь будет работать правильно
-                if (newLanguage != currentLanguage) {
-                    LocaleHelper.setLocale(requireContext(), newLanguage)
-                    activity?.setResult(Activity.RESULT_OK)
+                val oldLanguage = (pref as DropDownPreference).value
+
+                if (newLanguage != oldLanguage) {
+                    LocaleHelper.setNewLocale(requireContext(), newLanguage)
                     activity?.recreate()
                 }
                 true
@@ -78,58 +68,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.findViewById<com.google.android.material.appbar.MaterialToolbar>(R.id.settingsToolbar)
+            .setNavigationOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
 
-        val bg = ContextCompat.getColor(requireContext(), R.color.settings_background)
-
-        // красим весь контейнер и сам список
-        view.setBackgroundColor(bg)
-        listView.setBackgroundColor(bg)
-
-        // убираем анимации, которые размазывают на 7.x
-        (listView as? RecyclerView)?.itemAnimator = null
-
-        // на API 25–26 иногда помогает софт-слой у самого списка
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
-            listView.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-        }
-
-        val rv = listView
-
-        // симметричные поля по бокам + «сдвинуть вниз»
-        val side = resources.getDimensionPixelSize(R.dimen.prefs_side_padding)   // напр., 24dp
-        val top  = resources.getDimensionPixelSize(R.dimen.prefs_top_padding)    // напр., 48dp
-        rv.setPadding(side, top, side, 0)
-        rv.clipToPadding = false
-
-        // опционально: ограничить максимальную ширину и выровнять по центру на широких экранах
-        val maxWidth = resources.getDimensionPixelSize(R.dimen.prefs_max_width)  // напр., 560dp
-        rv.doOnLayout {
-            val lp = rv.layoutParams
-            // если родитель шире maxWidth — центрируем список
-            if (rv.width > maxWidth) {
-                lp.width = maxWidth
-                when (lp) {
-                    is FrameLayout.LayoutParams -> lp.gravity = Gravity.CENTER_HORIZONTAL
-                    is LinearLayout.LayoutParams -> lp.gravity = Gravity.CENTER_HORIZONTAL
-                }
-                rv.layoutParams = lp
-            }
-        }
-
-        // Получаем список (RecyclerView), который отображает настройки
-        val listView = listView
-
-        // 1. Включаем вертикальную полосу прокрутки
+        // A constrained parent owns the width before measurement. Never resize the
+        // RecyclerView from its own doOnLayout callback while rows are rebinding.
+        val side = resources.getDimensionPixelSize(R.dimen.prefs_side_padding)
+        val bottom = resources.getDimensionPixelSize(R.dimen.prefs_bottom_padding)
+        listView.setPadding(side, 0, side, bottom)
+        listView.clipToPadding = false
+        listView.itemAnimator = null
+        setDivider(null)
         listView.isVerticalScrollBarEnabled = true
-
-        // 2. Отключаем исчезновение (fading). Теперь полоска будет видна ВСЕГДА.
-        listView.isScrollbarFadingEnabled = false
-
-        // Опционально: можно переместить скроллбар поверх содержимого, чтобы он не занимал место
         listView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
     }
-    // -->
-
     override fun onStart() {
         super.onStart()
         findPreference<SeekBarPreference>("brightness")?.value?.let { v ->
@@ -142,34 +94,18 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
         updatePreferenceSummaries()
-        //updateUiForStealthMode()
+
     }
 
-    /*
-    private fun updateUiForStealthMode() {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val isStealthMode = prefs.getBoolean("stealth_mode_enabled", false)
-
-        val activeDurationPref: Preference? = findPreference("active_duration")
-        val pauseDurationPref: Preference? = findPreference("pause_duration")
-        val stealthInfoPref: Preference? = findPreference("stealth_mode_info")
-
-        activeDurationPref?.isEnabled = !isStealthMode
-        pauseDurationPref?.isEnabled = !isStealthMode
-        stealthInfoPref?.isVisible = isStealthMode
-    }
-     */
-
-    // ДОБАВЬ ЭТУ НОВУЮ ФУНКЦИЮ
     private fun updatePreferenceSummaries() {
         val prefs = preferenceManager.sharedPreferences ?: return
 
         // 1. Обновляем подпись для Языка
         findPreference<DropDownPreference>("language")?.apply {
-            val currentLangCode = prefs.getString("language", null) ?: LocaleHelper.getLanguage(requireContext())
+            val currentLangCode = LocaleHelper.getLanguage(requireContext())
             val index = findIndexOfValue(currentLangCode)
             if (index >= 0) {
-                summary = entries[index] // Показывает "Русский" или "English"
+                summary = entries[index]
             }
         }
 

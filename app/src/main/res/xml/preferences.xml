@@ -3,16 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:iconSpaceReserved="false">
 
-    <PreferenceCategory app:title="@string/category_timers">
+    <PreferenceCategory app:layout="@layout/settings_category" app:iconSpaceReserved="false" app:title="@string/category_timers">
 
         <androidx.preference.SeekBarPreference
             app:key="active_duration"
             app:title="@string/active_duration_title"
             app:summary="@string/active_duration_summary"
-            android:defaultValue="5"
+            android:defaultValue="10"
             app:min="1"
             android:max="20"
-            app:showSeekBarValue="true"
+            app:showSeekBarValue="false"
+            app:layout="@layout/settings_seekbar"
             app:updatesContinuously="true"/>
 
         <com.divinegames.mmover.MmSsSeekBarPreference
@@ -22,15 +23,18 @@
             android:defaultValue="36"
             app:min="0"
             android:max="180"
-            app:showSeekBarValue="true"
+            app:showSeekBarValue="false"
+            app:layout="@layout/settings_seekbar"
             app:updatesContinuously="true"/>
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/category_main_settings">
+    <PreferenceCategory app:layout="@layout/settings_category" app:iconSpaceReserved="false" app:title="@string/category_main_settings">
 
         <androidx.preference.SwitchPreferenceCompat
             app:key="vibration_enabled"
+            app:layout="@layout/settings_row"
+            app:summary="@string/settings_vibration_hint"
             app:title="@string/vibration_title"
             android:defaultValue="true" />
 
@@ -40,32 +44,36 @@
             android:defaultValue="100"
             app:min="10"
             android:max="100"
-            app:showSeekBarValue="true"
+            app:showSeekBarValue="false"
+            app:layout="@layout/settings_seekbar"
             app:updatesContinuously="true"/>
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/category_personalization">
+    <PreferenceCategory app:layout="@layout/settings_category" app:iconSpaceReserved="false" app:title="@string/category_personalization">
 
-        <androidx.preference.DropDownPreference
+        <com.divinegames.mmover.BackgroundPreviewPreference
             app:key="animation_style"
+            app:layout="@layout/settings_background_preview"
             app:title="@string/animation_style_title"
             app:entries="@array/animation_entries"
             app:entryValues="@array/animation_values"
-            android:defaultValue="background_blocks_medium"
+            android:defaultValue="generated_contrast_noise"
             app:widgetLayout="@layout/preference_widget_dropdown_arrow" />
 
         <androidx.preference.SeekBarPreference
             app:key="movement_speed"
             app:title="@string/speed_title"
-            android:defaultValue="300"
+            android:defaultValue="500"
             app:min="200"
             android:max="1000"
-            app:showSeekBarValue="true"
+            app:showSeekBarValue="false"
+            app:layout="@layout/settings_seekbar"
             app:updatesContinuously="true"/>
 
         <androidx.preference.DropDownPreference
             app:key="language"
+            app:layout="@layout/settings_dropdown"
             app:title="@string/language_title"
             app:entries="@array/language_entries"
             app:entryValues="@array/language_values"

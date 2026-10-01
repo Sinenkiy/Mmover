@@ -1,4 +1,4 @@
-package com.divinegames.mmover // Ваш пакет
+package com.divinegames.mmover
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
