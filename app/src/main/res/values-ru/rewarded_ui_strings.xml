@@ -1,0 +1,8 @@
+<resources>
+    <string name="rewarded_status_loading">Реклама загружается…</string>
+    <string name="rewarded_status_ready">Реклама готова к просмотру.</string>
+    <string name="rewarded_status_failed">Не удалось загрузить рекламу. Попробуйте позже.</string>
+    <string name="rewarded_status_unavailable">Реклама сейчас недоступна. Попробуйте позже.</string>
+    <string name="rewarded_loading_button">Загрузка…</string>
+    <string name="rewarded_retry">Повторить</string>
+</resources>

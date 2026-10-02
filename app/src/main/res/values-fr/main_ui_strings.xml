@@ -1,0 +1,10 @@
+<resources>
+    <string name="main_help">Aide</string>
+    <string name="motion_start">Démarrer</string>
+    <string name="motion_stop">Arrêter</string>
+    <string name="motion_description">Mouvement %1$d s · Pause %2$02d:%3$02d</string>
+    <string name="motion_description_stealth">Intervalles aléatoires · Mode furtif</string>
+    <string name="remove_ads_title">Supprimer les publicités</string>
+    <string name="remove_ads_purchase">Achat sans publicité</string>
+    <string name="remove_ads_unavailable">Les achats ne sont pas encore disponibles. Les moyens de paiement seront ajoutés plus tard.</string>
+</resources>

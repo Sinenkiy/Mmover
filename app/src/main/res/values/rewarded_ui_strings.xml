@@ -1,0 +1,8 @@
+<resources>
+    <string name="rewarded_status_loading">Loading the ad…</string>
+    <string name="rewarded_status_ready">The ad is ready to watch.</string>
+    <string name="rewarded_status_failed">The ad could not be loaded. Please try again later.</string>
+    <string name="rewarded_status_unavailable">An ad is not available right now. Please try again later.</string>
+    <string name="rewarded_loading_button">Loading…</string>
+    <string name="rewarded_retry">Retry</string>
+</resources>

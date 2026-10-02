@@ -1,0 +1,9 @@
+<resources>
+    <style name="ThemeOverlay.MouseMover.RewardDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/settings_card</item>
+        <item name="colorOnSurface">@color/glass_text</item>
+        <item name="colorPrimary">@color/settings_accent</item>
+        <item name="android:textColorPrimary">@color/glass_text</item>
+        <item name="android:textColorSecondary">@color/glass_secondary_text</item>
+    </style>
+</resources>

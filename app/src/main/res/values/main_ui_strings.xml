@@ -1,0 +1,10 @@
+<resources>
+    <string name="main_help">Help</string>
+    <string name="motion_start">Start</string>
+    <string name="motion_stop">Stop</string>
+    <string name="motion_description">Movement %1$d s · Pause %2$02d:%3$02d</string>
+    <string name="motion_description_stealth">Random intervals · Stealth mode</string>
+    <string name="remove_ads_title">Remove ads</string>
+    <string name="remove_ads_purchase">Ad removal purchase</string>
+    <string name="remove_ads_unavailable">Purchases are not available yet. Payment options will be added later.</string>
+</resources>

@@ -1,0 +1,4 @@
+<resources>
+    <string name="settings_vibration_hint">Вибрация во время движения</string>
+    <string name="settings_auto_save">Изменения сохраняются автоматически</string>
+</resources>

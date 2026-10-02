@@ -1,0 +1,17 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical" android:background="@drawable/settings_row" android:paddingBottom="8dp">
+    <LinearLayout android:id="@+id/questionButton" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:minHeight="64dp" android:padding="20dp"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:clickable="true" android:focusable="true"
+        android:background="?attr/selectableItemBackground">
+        <TextView android:id="@+id/questionText" style="@style/HelpQuestion"
+            android:layout_width="0dp" android:layout_weight="1" android:importantForAccessibility="no" />
+        <ImageView android:id="@+id/expandIcon" android:layout_width="24dp" android:layout_height="24dp"
+            android:layout_marginStart="12dp" android:src="@drawable/ic_help_expand"
+            android:contentDescription="@null" android:importantForAccessibility="no" />
+    </LinearLayout>
+    <TextView android:id="@+id/answerText" style="@style/HelpBody"
+        android:paddingStart="20dp" android:paddingEnd="20dp" android:paddingBottom="20dp" android:visibility="gone" />
+</LinearLayout>

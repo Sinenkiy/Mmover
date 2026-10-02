@@ -1,0 +1,10 @@
+<resources>
+    <string name="main_help">Hilfe</string>
+    <string name="motion_start">Starten</string>
+    <string name="motion_stop">Stoppen</string>
+    <string name="motion_description">Bewegung %1$d s · Pause %2$02d:%3$02d</string>
+    <string name="motion_description_stealth">Zufällige Intervalle · Tarnmodus</string>
+    <string name="remove_ads_title">Werbung entfernen</string>
+    <string name="remove_ads_purchase">Werbefreiheit kaufen</string>
+    <string name="remove_ads_unavailable">Käufe sind noch nicht verfügbar. Zahlungsmöglichkeiten folgen später.</string>
+</resources>

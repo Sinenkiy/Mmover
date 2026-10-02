@@ -1,0 +1,8 @@
+<resources>
+    <string name="rewarded_status_loading">Chargement de la publicité…</string>
+    <string name="rewarded_status_ready">La publicité est prête.</string>
+    <string name="rewarded_status_failed">Impossible de charger la publicité. Réessayez plus tard.</string>
+    <string name="rewarded_status_unavailable">La publicité est indisponible pour le moment. Réessayez plus tard.</string>
+    <string name="rewarded_loading_button">Chargement…</string>
+    <string name="rewarded_retry">Réessayer</string>
+</resources>

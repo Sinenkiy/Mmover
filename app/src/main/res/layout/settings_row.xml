@@ -1,0 +1,17 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:minHeight="80dp" android:gravity="center_vertical"
+    android:paddingStart="16dp" android:paddingEnd="16dp"
+    android:paddingTop="16dp" android:paddingBottom="24dp"
+    android:background="@drawable/settings_row">
+    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+        android:layout_weight="1" android:orientation="vertical">
+        <TextView android:id="@android:id/title" style="@style/SettingsRowTitle"
+            android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <TextView android:id="@android:id/summary" style="@style/SettingsRowSummary"
+            android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" />
+    </LinearLayout>
+    <LinearLayout android:id="@android:id/widget_frame"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginStart="12dp" android:gravity="center" android:orientation="vertical" />
+</LinearLayout>

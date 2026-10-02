@@ -1,0 +1,4 @@
+<resources>
+    <string name="settings_vibration_hint">Vibration during movement</string>
+    <string name="settings_auto_save">Changes are saved automatically</string>
+</resources>

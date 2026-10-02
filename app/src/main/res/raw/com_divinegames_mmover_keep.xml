@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@drawable/abc_switch_*,@drawable/background_blocks_small,@drawable/background_blocks_medium,@drawable/background_blocks_large,@drawable/background_stripes" />

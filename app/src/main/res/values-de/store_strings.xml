@@ -1,0 +1,3 @@
+<resources>
+    <string name="store_client_not_found">Kein Browser oder Store installiert.</string>
+</resources>

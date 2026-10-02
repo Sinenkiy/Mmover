@@ -1,0 +1,38 @@
+<resources>
+    <string name="help_intro">Posez votre souris optique sur l’écran et lancez l’animation.</string>
+    <string name="help_compatibility_title">Vérifiez votre souris</string>
+    <string name="help_compatibility">Conçu pour les souris à capteur optique rouge visible. Les capteurs infrarouges et laser ne sont pas pris en charge. Gardez l’écran propre ; certaines protections peuvent gêner le fonctionnement.</string>
+    <string name="help_steps_title">Commencer en trois étapes</string>
+    <string name="help_steps">1. Placez le capteur de la souris au-dessus de l’écran du téléphone.\n\n2. Appuyez sur Démarrer, puis sur le bouton de lecture de l’écran principal.\n\n3. Réglez la luminosité, l’animation et les intervalles dans les paramètres. Appuyez sur Arrêter pour terminer.</string>
+    <string name="help_faq_intro">Appuyez sur une question pour lire la réponse.</string>
+    <string name="help_expanded">Développé</string>
+    <string name="help_collapsed">Réduit</string>
+    <string-array name="faq_questions">
+        <item>Pourquoi ma souris à capteur rouge ne bouge-t-elle pas ?</item>
+        <item>Et les souris infrarouges ou laser ?</item>
+        <item>Comment fonctionnent les paramètres ?</item>
+        <item>Puis-je utiliser cette application au travail ?</item>
+        <item>Comment contacter le développeur ?</item>
+    </string-array>
+    <string-array name="faq_answers">
+        <item><![CDATA[L’application fonctionne généralement bien, mais le curseur ne bouge que de quelques millimètres. Si cela ne fonctionne pas :<br>
+    1. Mettez la luminosité au maximum.<br>
+    2. Nettoyez soigneusement l’écran.<br>
+    3. Activez les vibrations si nécessaire.]]></item>
+        <item><![CDATA[Les capteurs invisibles fonctionnent mal. Vérifiez :<br>
+    - Mode vibration activé.<br>
+    - Retirez la coque du téléphone.<br>
+    - Utilisez une surface dure.<br>
+    - Essayez différentes positions.<br>
+    Sinon, utilisez une souris à lumière rouge.]]></item>
+        <item><![CDATA[- « Vibration » : activer/désactiver.<br>
+    - « Luminosité » : luminosité maximale lors de l’activation.<br>
+    - « Animation » : Blocks/Stripes.<br>
+    - « Durée de pause » : temps entre deux mouvements.<br>
+    - « Mode furtif/Aléatoire » : délais aléatoires pour éviter la détection.]]></item>
+        <item><![CDATA[Ne l’utilisez pas si cela viole les règles de votre entreprise.]]></item>
+        <item><![CDATA[Oui, via le menu principal.]]></item>
+    </string-array>
+    <string name="help_version">Version %1$s</string>
+    <string name="help_scroll_more">Voir la suite</string>
+</resources>

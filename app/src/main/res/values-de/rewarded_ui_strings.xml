@@ -1,0 +1,8 @@
+<resources>
+    <string name="rewarded_status_loading">Werbung wird geladen…</string>
+    <string name="rewarded_status_ready">Die Werbung ist bereit.</string>
+    <string name="rewarded_status_failed">Die Werbung konnte nicht geladen werden. Bitte versuche es später erneut.</string>
+    <string name="rewarded_status_unavailable">Werbung ist derzeit nicht verfügbar. Bitte versuche es später erneut.</string>
+    <string name="rewarded_loading_button">Wird geladen…</string>
+    <string name="rewarded_retry">Erneut versuchen</string>
+</resources>

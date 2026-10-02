@@ -1,0 +1,17 @@
+<resources>
+    <style name="HelpBody">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/glass_secondary_text</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+    <style name="HelpQuestion" parent="HelpBody">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/glass_text</item>
+    </style>
+    <style name="HelpHeadline" parent="HelpQuestion">
+        <item name="android:textSize">30sp</item>
+    </style>
+</resources>

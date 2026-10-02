@@ -1,0 +1,19 @@
+<resources>
+    <style name="SettingsPreferenceFragment" parent="PreferenceFragment.Material">
+        <item name="android:layout">@layout/settings_preferences</item>
+        <item name="android:divider">@null</item>
+    </style>
+    <style name="SettingsRowTitle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/glass_text</item>
+    </style>
+    <style name="SettingsRowSummary">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/glass_secondary_text</item>
+    </style>
+    <color name="settings_surface">#EDF3F8</color>
+    <color name="settings_card">#FFFFFF</color>
+    <color name="settings_border">#DAE5EF</color>
+    <color name="settings_accent">#14618D</color>
+</resources>

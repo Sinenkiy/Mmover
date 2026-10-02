@@ -1,0 +1,8 @@
+<resources>
+    <color name="glass_header">#176B9F</color>
+    <color name="glass_top">#F02A3A4B</color>
+    <color name="glass_bottom">#EB172330</color>
+    <color name="glass_edge">#507B91A6</color>
+    <color name="glass_text">#F0F5FB</color>
+    <color name="glass_secondary_text">#C2D1DF</color>
+</resources>

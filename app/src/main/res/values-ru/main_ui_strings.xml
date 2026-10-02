@@ -1,0 +1,10 @@
+<resources>
+    <string name="main_help">Справка</string>
+    <string name="motion_start">Запустить</string>
+    <string name="motion_stop">Остановить</string>
+    <string name="motion_description">Движение %1$d с · Пауза %2$02d:%3$02d</string>
+    <string name="motion_description_stealth">Случайные интервалы · Стелс-режим</string>
+    <string name="remove_ads_title">Отключить рекламу</string>
+    <string name="remove_ads_purchase">Покупка отключения рекламы</string>
+    <string name="remove_ads_unavailable">Покупка пока недоступна. Способы оплаты добавим позже.</string>
+</resources>

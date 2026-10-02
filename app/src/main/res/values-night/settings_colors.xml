@@ -1,0 +1,6 @@
+<resources>
+    <color name="settings_surface">#14212E</color>
+    <color name="settings_card">#223445</color>
+    <color name="settings_border">#3B5063</color>
+    <color name="settings_accent">#83CFFC</color>
+</resources>

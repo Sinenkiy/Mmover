@@ -1,0 +1,38 @@
+<resources>
+    <string name="help_intro">Place your optical mouse on the screen and start the animation.</string>
+    <string name="help_compatibility_title">Check your mouse</string>
+    <string name="help_compatibility">Designed for mice with a visible red optical sensor. Infrared and laser sensors are not supported. Keep the screen clean; some screen protectors can interfere.</string>
+    <string name="help_steps_title">Get started in three steps</string>
+    <string name="help_steps">1. Place the mouse sensor over the phone screen.\n\n2. Tap Start, then the play button on the main screen.\n\n3. Adjust brightness, animation and intervals in Settings. Tap Stop to finish.</string>
+    <string name="help_faq_intro">Tap a question to read the answer.</string>
+    <string name="help_expanded">Expanded</string>
+    <string name="help_collapsed">Collapsed</string>
+    <string-array name="faq_questions">
+        <item>Why does my red-light mouse not move?</item>
+        <item>What about infrared or laser mice?</item>
+        <item>How do the settings work?</item>
+        <item>Can I use it at work?</item>
+        <item>How can I contact the developer?</item>
+    </string-array>
+    <string-array name="faq_answers">
+        <item><![CDATA[The application generally works very well with mice that use a red light but remember, the mouse cursor will only move a few millimeters. If it doesn\'t work, it may be that the maximum brightness of your phone is not sufficient. Here are some troubleshooting steps you can follow:<br>
+    1. Make sure the brightness level is set to maximum in the application settings.<br>
+    2. If this does not solve the problem, try cleaning the screen surface with a wipe.<br>
+    3. You can also activate the vibration mode if the previous actions did not fix the problem.<br>
+    If despite these checks, the problem persists, try using another red light mouse or another phone to determine the source of the problem.]]></item>
+        <item><![CDATA[The application tends to malfunction with mice that use an invisible light. However, here are some checks you can perform:<br>
+    - Make sure the vibration mode is activated in the application settings. If this mode is activated but it does not work, it may be that the vibrations of your phone are not strong enough.<br>
+    - If your phone has a protective case, try to remove it. Protective cases tend to dampen vibrations. Also, it is better to place the phone on a hard surface, as soft surfaces can also dampen vibrations.<br>
+    - Experiment with different phone positions. Typically, positioning your mouse perpendicular to your phone gives better results.<br>
+    If despite these checks, it still does not work, it would be better to change the mouse and opt for a mouse that uses a red light. These mice are not very expensive, you can find them second-hand for 1 or 2 euros/dollars.]]></item>
+        <item><![CDATA[- "Vibration": Enable or disable vibration mode.<br>
+    - "Brightness Level": Set the maximum brightness when the app wakes up (do not reduce too much or the app will not work).<br>
+    - "Animation": Select the desired animation type Blocks/Stripes. Usually, the Blocks animation works better, but for some mice, it seems that the Stripes animation is better.<br>
+    - "Pause Duration": Set the delay between 2 scrollings/vibrations.<br>
+    - "Stealth / Random Mode": Enable a random delay between 2 scrollings/vibrations. The delay will be between 0 and "Wake up interval" value set above. This function is useful to avoid the usage of mouse mover to be detected.]]></item>
+        <item><![CDATA[Do not use this app if it conflicts with your employer\'s policies.]]></item>
+        <item><![CDATA[Yes, I will strive to assist you. You can send me an email through the main menu (by clicking in the upper right corner). I kindly ask for your patience, as I manage this project during my free time, alongside my job and other commitments.]]></item>
+    </string-array>
+    <string name="help_version">Version %1$s</string>
+    <string name="help_scroll_more">More below</string>
+</resources>

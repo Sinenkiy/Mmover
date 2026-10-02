@@ -1,0 +1,38 @@
+<resources>
+    <string name="help_intro">Legen Sie Ihre optische Maus auf den Bildschirm und starten Sie die Animation.</string>
+    <string name="help_compatibility_title">Maus prüfen</string>
+    <string name="help_compatibility">Für Mäuse mit sichtbarem rotem optischem Sensor. Infrarot- und Lasersensoren werden nicht unterstützt. Halten Sie den Bildschirm sauber; Schutzfolien können die Funktion beeinträchtigen.</string>
+    <string name="help_steps_title">In drei Schritten starten</string>
+    <string name="help_steps">1. Platzieren Sie den Maussensor über dem Handybildschirm.\n\n2. Tippen Sie auf Start und dann auf die Starttaste im Hauptbildschirm.\n\n3. Passen Sie Helligkeit, Animation und Intervalle in den Einstellungen an. Zum Beenden tippen Sie auf Stopp.</string>
+    <string name="help_faq_intro">Tippen Sie auf eine Frage, um die Antwort zu lesen.</string>
+    <string name="help_expanded">Ausgeklappt</string>
+    <string name="help_collapsed">Eingeklappt</string>
+    <string-array name="faq_questions">
+        <item>Warum bewegt sich meine Maus mit rotem Sensor nicht?</item>
+        <item>Was ist mit Infrarot- oder Lasermäusen?</item>
+        <item>Wie funktionieren die Einstellungen?</item>
+        <item>Darf ich die App bei der Arbeit nutzen?</item>
+        <item>Wie erreiche ich den Entwickler?</item>
+    </string-array>
+    <string-array name="faq_answers">
+        <item><![CDATA[Die App funktioniert in der Regel gut mit roten Lichtmäusen, aber der Cursor bewegt sich nur wenige Millimeter. Wenn sie nicht reagiert, könnte deine Bildschirmhelligkeit nicht ausreichen. Versuche Folgendes:<br>
+    1. Stelle im App-Menü die Helligkeit auf Maximum.<br>
+    2. Reinige den Bildschirm gründlich.<br>
+    3. Aktiviere die Vibrationsfunktion.]]></item>
+        <item><![CDATA[Unsichtbare Sensoren funktionieren oft nicht zuverlässig. Prüfe:<br>
+    - Vibrationsmodus einschalten.<br>
+    - Handyhülle entfernen.<br>
+    - Gerät auf eine harte Oberfläche legen.<br>
+    - Verschiedene Positionen ausprobieren.<br>
+    Falls es weiterhin nicht funktioniert, verwende eine Maus mit rotem Licht (kosten meist sehr wenig).]]></item>
+        <item><![CDATA[- „Vibration”: Ein/Aus.<br>
+    - „Helligkeit”: Maximalhelligkeit beim Aktivieren.<br>
+    - „Animation”: Blocks/Stripes auswählen.<br>
+    - „Pausezeit”: Zeit zwischen zwei Bewegungen.<br>
+    - „Stealth/Random Mode”: Zufällige Pausen zur besseren Erkennungssicherheit.]]></item>
+        <item><![CDATA[Verwende die App nicht, wenn dein Arbeitgeber dies verbietet.]]></item>
+        <item><![CDATA[Ja, über das Hauptmenü kannst du eine E-Mail senden.]]></item>
+    </string-array>
+    <string name="help_version">Version %1$s</string>
+    <string name="help_scroll_more">Weiter unten</string>
+</resources>
