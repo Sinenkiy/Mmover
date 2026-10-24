@@ -12,10 +12,9 @@ import com.yandex.mobile.ads.banner.BannerAdSize
 import com.yandex.mobile.ads.banner.BannerAdView
 import com.yandex.mobile.ads.common.AdError
 import com.yandex.mobile.ads.common.AdRequest
-import com.yandex.mobile.ads.common.AdRequestConfiguration
 import com.yandex.mobile.ads.common.AdRequestError
 import com.yandex.mobile.ads.common.ImpressionData
-import com.yandex.mobile.ads.common.MobileAds
+import com.yandex.mobile.ads.common.YandexAds
 import com.yandex.mobile.ads.rewarded.Reward
 import com.yandex.mobile.ads.rewarded.RewardedAd
 import com.yandex.mobile.ads.rewarded.RewardedAdEventListener
@@ -104,7 +103,7 @@ internal class MainAdsController(
             sdkStarted = true
             val token = requestPolicy.generation
             try {
-                MobileAds.initialize(activity.applicationContext) {
+                YandexAds.initialize(activity.applicationContext) {
                     activity.runOnUiThread {
                         if (accepts(token)) {
                             sdkReady = true
@@ -137,15 +136,15 @@ internal class MainAdsController(
         try {
             banner = BannerAdView(activity)
             val view = banner
-            view.setAdUnitId(if (isTop) topId else bottomId)
+            val adUnitId = if (isTop) topId else bottomId
             val width = (container.width.takeIf { it > 0 } ?: activity.resources.displayMetrics.widthPixels)
-            view.setAdSize(BannerAdSize.stickySize(activity,
+            view.setAdSize(BannerAdSize.sticky(activity,
                 (width / activity.resources.displayMetrics.density).toInt().coerceAtLeast(1)))
             val schedule = BannerRefreshController(MainThreadScheduler(),
                 BannerTimingRegistry.slot(activity, if (isTop) "top" else "bottom"),
                 sdkOwnsRefresh = true, canLoad = ::canRequest,
                 load = {
-                    try { view.loadAd(AdRequest.Builder().build()) }
+                    try { view.loadAd(AdRequest.Builder(adUnitId).build()) }
                     catch (error: Exception) {
                         (if (isTop) topSchedule else bottomSchedule)?.failed()
                         Log.w("MainAds", "banner request failed: ${error.message}")
@@ -167,8 +166,6 @@ internal class MainAdsController(
                     if (accepts(token)) schedule.impression()
                 }
                 override fun onAdClicked() {}
-                override fun onLeftApplication() {}
-                override fun onReturnedToApplication() {}
             })
             container.addView(view)
         } catch (error: Exception) {
@@ -186,21 +183,19 @@ internal class MainAdsController(
         lastError = null
         stateCallback?.invoke()
         try {
-            if (loader == null) loader = RewardedAdLoader(activity).apply {
-                setAdLoadListener(object : RewardedAdLoadListener {
-                    override fun onAdLoaded(ad: RewardedAd) {
-                        if (!accepts(token)) { ad.setAdEventListener(null); return }
-                        loading = false
-                        loadFailed = false
-                        rewarded = ad
-                        stateCallback?.invoke()
-                    }
-                    override fun onAdFailedToLoad(error: AdRequestError) {
-                        if (accepts(token)) fail("load", "${error.code}, ${error.description}")
-                    }
-                })
-            }
-            loader?.loadAd(AdRequestConfiguration.Builder(rewardedId).build())
+            val adLoader = loader ?: RewardedAdLoader(activity).also { loader = it }
+            adLoader.loadAd(AdRequest.Builder(rewardedId).build(), object : RewardedAdLoadListener {
+                override fun onAdLoaded(rewarded: RewardedAd) {
+                    if (!accepts(token)) { rewarded.setAdEventListener(null); return }
+                    loading = false
+                    loadFailed = false
+                    this@MainAdsController.rewarded = rewarded
+                    stateCallback?.invoke()
+                }
+                override fun onAdFailedToLoad(error: AdRequestError) {
+                    if (accepts(token)) fail("load", "${error.code}, ${error.description}")
+                }
+            })
         } catch (error: Exception) {
             fail("request", error.message ?: error.javaClass.simpleName)
         }
@@ -244,10 +239,10 @@ internal class MainAdsController(
                     loadRewarded()
                 }
             }
-            override fun onAdFailedToShow(error: AdError) {
+            override fun onAdFailedToShow(adError: AdError) {
                 if (accepts(token) && session === claim) {
                     endPresentation()
-                    fail("show", error.description)
+                    fail("show", adError.description)
                 }
             }
         })
@@ -276,7 +271,7 @@ internal class MainAdsController(
             it.destroy()
         }
         top = null; bottom = null
-        loader?.setAdLoadListener(null)
+        loader?.cancelLoading()
         loader = null
         rewarded?.setAdEventListener(null)
         rewarded = null

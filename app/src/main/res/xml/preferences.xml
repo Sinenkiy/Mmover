@@ -33,6 +33,7 @@
 
         <androidx.preference.SwitchPreferenceCompat
             app:key="vibration_enabled"
+            app:widgetLayout="@layout/settings_switch_widget"
             app:layout="@layout/settings_row"
             app:summary="@string/settings_vibration_hint"
             app:title="@string/vibration_title"

@@ -233,7 +233,8 @@ class MainFlowTest {
         androidx.test.espresso.Espresso.onView(
             androidx.test.espresso.matcher.ViewMatchers.withText(R.string.stealth_not_now)
         ).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog())
-            .perform(androidx.test.espresso.action.ViewActions.click())
+            // Large fonts may put this button in the dialog's scrollable action panel.
+            .perform(androidx.test.espresso.action.ViewActions.scrollTo(), androidx.test.espresso.action.ViewActions.click())
         prefs.edit().putString("last_stealth_activation_date", java.time.LocalDate.now().toString())
             .putBoolean("stealth_mode_enabled", true).commit()
         scenario.moveToState(Lifecycle.State.CREATED)

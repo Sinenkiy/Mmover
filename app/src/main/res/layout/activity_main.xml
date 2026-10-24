@@ -141,6 +141,8 @@
                 android:text="@string/stealth_mode_switch"
                 android:textColor="@color/glass_text"
                 app:switchPadding="10dp"
+                android:thumb="@drawable/stealth_switch_thumb"
+                app:track="@drawable/stealth_switch_track"
                 app:thumbTint="@color/glass_switch_thumb"
                 app:trackTint="@color/glass_switch_track" />
 

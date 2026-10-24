@@ -89,3 +89,106 @@ AVD запускались последовательно с `-read-only -no-sna
 Полный сетевой сценарий закрытия demo rewarded и возврата требует ручной проверки (описанный выше opt-in тест не прошёл). Не проверены физическая мышь, рабочий производственный rewarded-блок, подписанный release и обновление поверх магазинной версии. Сборка unsigned release не заменяет эти проверки. Подпись/публикация не выполнялись согласно руководству. Чистого AOSP-образа без GMS нет; отключение пакетов в Google API AVD не эквивалентно проверке на таком образе. Полноценная оплата остаётся отдельной задачей, поскольку исходный MMover её не реализовывал.
 
 Поведение SDK refresh сверено с [официальным FAQ Yandex](https://ads.yandex.com/helpcenter/en/support/faq/sdk-integration). Причина harness-ожидания сверена с [исходником ActivityScenario](https://github.com/android/android-test/blob/main/core/java/androidx/test/core/app/ActivityScenario.java).
+
+## Дополнение 2026-10-24: core-fixes archive
+
+Перенос применимых исправлений завершён. Цель — MMover 2.01/201, ветка 201. До начала изменений рабочее дерево было чистым. Проверены SHA256 всех 13 записей пакета MouseMover-core-fixes-for-second-app.zip; эталон MouseMover использовался только для чтения. Версия и настройки сборки берутся из текущего проекта, а не из устаревших сведений сентябрьского отчёта выше.
+
+### Сопоставление и изменения
+
+- A: Main имел только tint стандартного SwitchCompat. Добавлены собственные XML thumb/track и их назначение в activity_main.xml до создания View. Переключатель больше не зависит от растровых ресурсов AppCompat, вынесенных в density split.
+- B: vibration_enabled использовал стандартный widget SwitchPreferenceCompat. Добавлен settings_switch_widget с теми же XML shapes, обязательным switchWidget ID и отключёнными clickable/focusable; обработка клика остаётся у строки preference.
+- Существующие цвета совпали с эталоном и сохранены. Ключи/defaults, ограничения доступа за награду, package/namespace, версия, реклама, платежи, подпись, зависимости и manifest не изменялись. Production Kotlin-код не менялся.
+- Адаптирован StealthSwitchResourcesTest; добавлен CoreUiRegressionTest для клика строки, сохранения и accessibility-прокрутки. В MainFlowTest добавлен scrollTo перед кликом «Не сейчас»: при шрифте 150% на API 25 кнопка лежит в штатной прокручиваемой панели Material-диалога. Условия проверки награды и production-диалог не изменены.
+
+C1: собственные Toast проходят BaseActivity.showSafeToast с lifecycle guard, который не перехватывает асинхронный Toast$TN. Источник события эталона неизвестен; исправление Toast BadToken не заявляется. C2: accessibility не отключалась, реальное действие прокрутки проверено. C3–C5 (Meizu ANR, broadcast, native thread OOM) не имеют установленного источника в MMover, поэтому изменения framework/manifest/потоков не внесены. Исключённые рекламные исправления не переносились.
+
+### Проверки текущих исправлений
+
+Сборки assembleDebug, assembleDebugAndroidTest, testDebugUnitTest, lintDebug, assembleRelease и bundleRelease успешны. Release собран с R8/resource shrinking. JVM: **54/54**, без failures/errors. Lint до и после: **0 ошибок, 108 предупреждений**, набор предупреждений не изменился. Финальная сборка androidTest и lint также успешны после удаления экспериментального release-only теста.
+
+| API / AVD | Шрифт 100% | Шрифт 150% | Логи |
+| --- | --- | --- | --- |
+| 25 / Small_Phone | 7/7 | 7/7 | api25-retry |
+| 28 / Pixel_3 | 7/7 | 7/7 | api28 |
+| 32 / Pixel_6_Pro | 7/7 | 7/7 | api32 |
+| 36 / Medium_Phone_API_36 | 7/7 | 7/7 | api36 |
+
+Итого **56 успешных запусков методов**, а не 56 уникальных тестов. В каждом запуске два resource-теста проверяют реальные Main layout и PreferenceGroupAdapter в светлой/тёмной теме при density 160/240/320/560/640. Дополнительно проверены: изменение вибрации ровно один раз на клик строки, сохранение после пересоздания и повторного открытия, правила доступа главного переключателя, ширина настроек и реальное accessibility ACTION_SCROLL_FORWARD в инструкции. TalkBack вручную не проверялся. Первый API 25 дал 6/7 при крупном шрифте из-за прокрутки тестом; окончательный повтор после исправления harness прошёл полностью.
+
+Minified release отдельно проверен на API 32 обычным запуском через launcher с установкой **только base-master.apk**, без density split. В данном AAB нет отдельного ABI split. Main и Settings открылись; строка вибрации переключила true → false, значение сохранилось после остановки процесса и нового запуска. Скриншоты просмотрены, AndroidRuntime не содержит fatal-ошибок. Диагностические APK из unsigned AAB подписаны только стандартным debug-ключом; production-ключи не использовались. Сеть временного release-эмулятора отключена. Готовность к загрузке в магазин с production-подписью этой проверкой не заявляется.
+
+Две промежуточные проблемы диагностики сохранены в логах: первая установка ошибочно ожидала отсутствующий ABI split; затем debug AndroidJUnitRunner не стартовал поверх minified release из-за отсутствующего kotlin.jvm.internal.Intrinsics. Это ошибки тестового инструмента, не успешные тесты приложения. Несовместимый экспериментальный ReleaseSwitchSmokeTest удалён из исходников; release проверен через интерфейс, без ослабления R8/production-конфигурации.
+
+Все AVD запускались последовательно в одноразовых сеансах -read-only -no-snapshot и закрыты. git diff --check прошёл. Аудит 214 исходных tracked-файлов подтвердил только пять ожидаемых изменений; остальные 209, включая конфигурацию и production Kotlin, совпали по SHA256. Добавлены три ресурса и два тестовых файла. Коммит, push и публикация не выполнялись.
+
+Логи, исходный пакет и аудит: artifacts/core-fixes-2026-10-24/ (исключены из Git). Основные файлы: build.log, final-validation.log, preservation-audit.json, baseline-lint.xml; каталоги матрицы указаны в таблице. Финальная release-проверка: api32-release-ui/result.txt, runtime-log.txt, XML и скриншоты. Неуспешные попытки: api25, api32-release. Результаты unit/lint также находятся в app/build/test-results/testDebugUnitTest и app/build/reports/lint-results-debug.html. AAB: app/build/outputs/bundle/release/app-release.aab, без production-подписи.
+
+## Обновление 2026-10-24: target SDK 37 / Yandex 8.6.0
+
+Обновление завершено. В app/build.gradle.kts установлены compileSdk=37 и targetSdk=37. minSdk=24, package/namespace com.divinegames.mmover, versionName=2.01 / versionCode=201 и настройки подписи сохранены. Использована установленная финальная платформа Android 37.0 revision 2 (PreviewSdkInt=0). Версии AGP/Gradle/Kotlin не менялись; AGENTS.md приведён в соответствие фактической конфигурации.
+
+Yandex Mobile Ads обновлён с 7.17.0 до **8.6.0**. На момент проверки это latest/release в Maven Central, версия также подтверждена [официальной историей изменений](https://ads.yandex.com/helpcenter/en/dev/android/changelog-android). Выполнена необходимая [миграция API 8](https://ads.yandex.com/helpcenter/en/dev/android/release/8-0-0-migration):
+
+- MobileAds заменён на YandexAds.
+- Баннеры используют AdRequest.Builder(adUnitId) и BannerAdSize.sticky; удалены устаревшие callbacks ухода/возврата.
+- Rewarded использует AdRequest и listener, переданный непосредственно в loadAd; при закрытии контроллера вызывается cancelLoading.
+- Сохранены lifecycle/generation guards, защита от повторной загрузки и выдачи награды, refresh-политика, пользовательские настройки и все рекламные ID. SDK используется только Yandex; AdMob/Firebase/UMP/Google Play Billing не добавлены. Транзитивная AppMetrica обновилась вместе с SDK до 8.5.1; её analytics-billing-модули не являются интеграцией платежей приложения.
+
+### Сборки и аудит
+
+Успешны assembleDebug, assembleDebugAndroidTest, testDebugUnitTest, lintDebug, assembleRelease и bundleRelease. Release использует R8/resource shrinking. JVM: **54/54**, failures/errors=0. Lint: **0 ошибок / 105 предупреждений**, было 0/108; удалились только предупреждения об устаревших target SDK, compile SDK и Yandex SDK. Новых lint-предупреждений нет.
+
+Готовый release APK проверен aapt2: targetSdk=37, minSdk=24, версия 2.01(201). Список permissions совпадает с предыдущей сборкой; native-библиотек в APK нет. Рекламные ID и условия выбора debug/demo проверены сравнением с сохранённым MainAdsController. git diff --check прошёл. Из 214 исходных tracked-файлов изменены только девять ожидаемых файлов суммарно для обновления SDK и предыдущего переноса; неожиданных изменений нет.
+
+### Runtime-проверки с targetSdk=37
+
+| API / AVD | Регрессия | Дополнительно |
+| --- | --- | --- |
+| 25 / Small_Phone | 29/29 | 2/2 live demo |
+| 28 / Pixel_3 | 29/29 | — |
+| 32 / Pixel_6_Pro | 29/29 | — |
+| 36 / Medium_Phone_API_36 | 29/29 | 10/10 при шрифте 150%; 2/2 live demo |
+
+Итого **130 успешных запусков методов** на эмуляторах. Регрессия: MainFlowTest, RewardedDialogTest, SettingsNavigationTest, HelpScreensTest, CoreUiRegressionTest, StealthSwitchResourcesTest, SettingsLayoutTest. Проверены движение/остановка/фон, навигация и пересоздание, системные отступы, четыре локализации, сохранение настроек, обе темы и XML-переключатели на пяти плотностях, правила rewarded-доступа.
+
+Live demo на API 25 и 36: реально загрузились оба баннера и rewarded, возврат из инструкции сохраняет контроллер и загруженную рекламу; инициализация SDK не блокирует движение. Оба opt-in параметра включены, каждый из двух методов исполнялся, пропусков не было. Логи подтверждают интеграцию/инициализацию Yandex Mobile Ads 8.6.0. Производственные объявления не нажимались; тесты использовали только debug/demo ID. Полный просмотр/закрытие rewarded в рамках этого обновления не запускался; успешная загрузка не выдаётся за проверку playback.
+
+Все AVD запускались последовательно в одноразовых сеансах -read-only -no-snapshot и закрыты. Пользовательские AVD и их сохранённые данные не изменялись.
+
+### Ограничение проверки API 37 на первом этапе — устранено ниже
+
+На момент завершения первого этапа сборка с API 37 была подтверждена, но runtime API 37 оставался непроверенным: отсутствовал системный образ и требовалось обновление эмулятора. Настройка compile/target сверена с [Android Developers](https://developer.android.com/about/versions/17/setup-sdk). По последующему запросу пользователя среда обновлена и runtime-тесты выполнены; окончательные результаты приведены в разделе «Дополнительная проверка API 37» ниже.
+
+Логи и аудит: artifacts/core-fixes-2026-10-24/sdk37-yandex86/. Основные файлы: final-build.log, release-dependencies.txt, artifact-audit.json, preservation-audit.json, build-artifact-hashes.json; результаты runtime — api25/api28/api32/api36. В sdk37-validation.ps1 сохранены команды матрицы.
+
+AAB: app/build/outputs/bundle/release/app-release.aab. Release APK: app/build/outputs/apk/release/app-release-unsigned.apk. Production-подпись, коммит, push и публикация не выполнялись. Исправления переключателей из предыдущего архива сохранены.
+
+## Дополнительная проверка API 37 — 2026-10-24
+
+По запросу пользователя Android Emulator обновлён с 37.1.11 до **37.2.12** (build 16428233); установлены официальные Android SDK Command-line Tools 23.0 и Google APIs x86_64 system image API 37.0. Создан отдельный AVD **MMover_API_37** на основе Pixel 6 (RAM 2048 МБ). Образ и устройство сохранены для дальнейшего запуска через Device Manager Android Studio. Существующие AVD не менялись.
+
+На реально загруженном устройстве подтверждены Android **17**, SDK **37**, sdk_full=37.0, codename=REL. Установленный MMover имеет versionCode=201, minSdk=24, targetSdk=37. Предыдущее ограничение проверки API 37 снято.
+
+### Совместимость тестовых библиотек
+
+Первый прогон дал 20/29: девять тестов с UI-вводом завершились NoSuchMethodException InputManager.getInstance внутри Espresso 3.6.1. Это несовместимость тестового инструмента с Android 17. Обновлены только зависимости androidTest: **Espresso 3.7.0**, **AndroidX JUnit 1.3.0**. Переход с reflection на getSystemService описан в [официальных AndroidX Test release notes](https://developer.android.com/jetpack/androidx/releases/test). Условия тестов и код приложения для этого не менялись. Ранние логи сохранены в api37-initial.
+
+### Окончательные результаты
+
+| Конфигурация API 37 | Результат | Лог |
+| --- | --- | --- |
+| Телефон, основной набор | 29/29 | api37/regression.txt |
+| Телефон, шрифт 150% | 10/10 | api37/large-font.txt |
+| Телефон, live demo Yandex 8.6.0 | 2/2 | api37/demo-loading.txt |
+| Широкий экран 2560×1600, density 320 (1280×800 dp) | 12/12 | api37-tablet/regression.txt |
+
+Итого **53 успешных запуска методов**, без пропусков в этих наборах. Проверены движение/остановка, настройки и пересоздание, системные отступы, темы, XML-переключатели, крупный шрифт, справка и EN/RU/DE/FR. На широком экране дополнительно проверены шапка, навигация/смена языка, справка и ширина настроек. Это отдельный одноразовый сеанс того же AVD с временным изменением размера/плотности; постоянный профиль Pixel 6 сохранён. Скриншоты Main, Settings и инструкции просмотрены для телефона и широкого экрана.
+
+В live demo реально загрузились оба баннера и rewarded; возврат из инструкции сохраняет контроллер и баннеры, SDK не блокирует движение. Оба opt-in параметра liveYandex/optionalSdk включены. Полный просмотр/закрытие rewarded здесь не запускался. Использовались только debug/demo ID.
+
+Сборки assembleDebug, assembleDebugAndroidTest, assembleRelease и bundleRelease успешны; JVM **54/54**. Финальный lint с принудительным повтором задач: **0 ошибок / 103 предупреждения**. Первичная попытка lint использовала устаревшие данные quickfix из кэша; после :app:lintDebug --rerun-tasks проверка завершилась успешно. SHA256 debug APK, unsigned release APK и AAB совпадают с предыдущей сборкой SDK 37 / Yandex 8.6.0: изменение тестовых зависимостей не изменило приложение.
+
+В финальных logcat телефона и широкого экрана нет FATAL EXCEPTION, ANR приложения или Fatal signal. Все тестовые сеансы -read-only -no-snapshot закрыты. Установленные SDK/образ и новый AVD сохранены; временные копии установщика удалены. git diff --check прошёл. Идентификаторы, подпись, рекламные и платёжные настройки не менялись; коммит, push и публикация не выполнялись.
+
+Логи и воспроизводимые команды: **artifacts/core-fixes-2026-10-24/api37-validation/**. Итог: summary.json; окружение: runtime-version.json, installed-app.txt, emulator-after.properties, system-image-package.xml; контрольные суммы: artifact-hashes.json. Сборки: test-tools-build.log, fresh-lint.log; сценарии: run-api37.ps1 и run-api37-tablet.ps1; скриншоты: api37/screens и api37-tablet/screens. Логи установки: sdk-install.log и image-install.log. Неуспешный первый прогон оставлен в api37-initial и не включён в итоговые 53 успешных запуска.

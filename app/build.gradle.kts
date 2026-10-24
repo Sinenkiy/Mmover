@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.divinegames.mmover"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.divinegames.mmover"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 37
         versionCode = 201
         versionName = "2.01"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

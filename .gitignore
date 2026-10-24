@@ -19,3 +19,4 @@ local.properties
 /*.log
 *.apk
 *.aab
+/artifacts/core-fixes-2026-10-24/

@@ -2,13 +2,13 @@
 
 ## Идентичность и интеграции
 
-Пакет и namespace: `com.divinegames.mmover`. Версия 1.04 / 104. Приложение распространяется только через RuStore: `https://apps.rustore.ru/app/com.divinegames.mmover`. Сохраняйте бренд, иконки, подпись, пользовательские preferences и контакты. Не добавляйте Google Play Billing/Review/Updates.
+Пакет и namespace: `com.divinegames.mmover`. Версия 2.01 / 201. Приложение распространяется только через RuStore: `https://apps.rustore.ru/app/com.divinegames.mmover`. Сохраняйте бренд, иконки, подпись, пользовательские preferences и контакты. Не добавляйте Google Play Billing/Review/Updates.
 
-Реклама: только Yandex Mobile Ads 7.17.0 независимо от региона. Существующие release ID: верхний `demo-banner-yandex`, нижний `R-M-17944676-2`, rewarded `R-M-17944676-3`. Верхний demo ID — исходная настройка, не заменять без задачи пользователя. Debug использует только demo-рекламу. Firebase, AdMob, UMP, медиация и платежи не реализованы. Кнопка отключения рекламы открывает информационный диалог и не выдаёт права.
+Реклама: только Yandex Mobile Ads 8.6.0 независимо от региона. Существующие release ID: верхний `demo-banner-yandex`, нижний `R-M-17944676-2`, rewarded `R-M-17944676-3`. Верхний demo ID — исходная настройка, не заменять без задачи пользователя. Debug использует только demo-рекламу. Firebase, AdMob, UMP, медиация и платежи не реализованы. Кнопка отключения рекламы открывает информационный диалог и не выдаёт права.
 
 ## Стек и код
 
-Kotlin 2.0.21, AGP 8.12.3, Gradle 8.13; minSdk 24, compileSdk/targetSdk 35, Java 11 и desugaring. Модуль `app`, XML, View Binding, AppCompat, Preference, Material, корутины. Зависимости закреплены в `gradle/libs.versions.toml`.
+Kotlin 2.2.10, AGP 9.4.1, Gradle 9.6.0; minSdk 24, compileSdk/targetSdk 37, Java 11 и desugaring. Модуль `app`, XML, View Binding, AppCompat, Preference, Material, корутины. Зависимости закреплены в `gradle/libs.versions.toml`.
 
 - `MotionController`, `TaskScheduler`: чистая логика движения, ожидания и остановки. Один callback, монотонное время. `pause_duration` хранит шаги по 5 секунд.
 - `MainActivity`: отображение состояния, яркость и вибрация. В `onPause` движение останавливается, при возврате само не запускается. В `onDestroy` закрываются контроллеры.
@@ -26,7 +26,7 @@ Kotlin 2.0.21, AGP 8.12.3, Gradle 8.13; minSdk 24, compileSdk/targetSdk 35, Java
 
 Из корня проекта: `./gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest :app:testDebugUnitTest :app:lintDebug`. При изменении ресурсов/SDK/R8 также `:app:assembleRelease`. Сборка unsigned release не доказывает работу подписанного приложения.
 
-Основная матрица переноса: API 25, 28, 32, 36. Запускать тяжёлые AVD последовательно, предпочтительно с `-read-only -no-snapshot`. Не очищать данные пользовательского устройства. Сохранять и восстанавливать временные настройки. Обычные Android-тесты блокируют рекламу через политику запросов до RESUMED. Сетевые тесты отдельно, только demo ID, без автоматических кликов по рабочим объявлениям.
+Основная матрица переноса: API 25, 28, 32, 36; для targetSdk 37 также API 37 (MMover_API_37, Google APIs x86_64). Android-тесты используют Espresso 3.7.0 / AndroidX JUnit 1.3.0: Espresso 3.6.1 несовместим с UI-вводом на Android 17. Запускать тяжёлые AVD последовательно, предпочтительно с `-read-only -no-snapshot`. Не очищать данные пользовательского устройства. Сохранять и восстанавливать временные настройки. Обычные Android-тесты блокируют рекламу через политику запросов до RESUMED. Сетевые тесты отдельно, только demo ID, без автоматических кликов по рабочим объявлениям.
 
 Сохраняйте EN/RU/DE/FR, соответствие массивов и placeholders. Проверяйте маленький экран, планшет, светлую/тёмную тему, крупный шрифт, смену языка, повторные insets. Физическая мышь проверяется отдельно от эмулятора.
 
