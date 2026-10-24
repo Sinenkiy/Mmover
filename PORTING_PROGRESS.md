@@ -192,3 +192,61 @@ AAB: app/build/outputs/bundle/release/app-release.aab. Release APK: app/build/ou
 В финальных logcat телефона и широкого экрана нет FATAL EXCEPTION, ANR приложения или Fatal signal. Все тестовые сеансы -read-only -no-snapshot закрыты. Установленные SDK/образ и новый AVD сохранены; временные копии установщика удалены. git diff --check прошёл. Идентификаторы, подпись, рекламные и платёжные настройки не менялись; коммит, push и публикация не выполнялись.
 
 Логи и воспроизводимые команды: **artifacts/core-fixes-2026-10-24/api37-validation/**. Итог: summary.json; окружение: runtime-version.json, installed-app.txt, emulator-after.properties, system-image-package.xml; контрольные суммы: artifact-hashes.json. Сборки: test-tools-build.log, fresh-lint.log; сценарии: run-api37.ps1 и run-api37-tablet.ps1; скриншоты: api37/screens и api37-tablet/screens. Логи установки: sdk-install.log и image-install.log. Неуспешный первый прогон оставлен в api37-initial и не включён в итоговые 53 успешных запуска.
+
+## Обновление зависимостей и Gradle DSL — 2026-10-24
+
+Обработан список из 22 предупреждений пользователя. Версии сверены с метаданными официальных Google Maven / Maven Central; использованы стабильные релизы, без alpha/beta. AGP 9.4.1, Gradle 9.6.0, compile/target SDK 37 и minSdk 24 сохранены.
+
+### Ответ по каждому пункту
+
+| № | Предупреждение | Выполнено |
+| --- | --- | --- |
+| 1 | activity-ktx 1.9.0 → 1.13.0 | Удалена неиспользуемая запись и версия activityKtx. Приложение использует activity 1.13.0. |
+| 2 | core-splashscreen 1.0.1 | Обновлён до 1.2.0. |
+| 3 | org.jetbrains.kotlin.android 2.2.10 | Kotlin обновлён до 2.4.21. Отдельный Android Kotlin plugin удалён; используется встроенная поддержка AGP с kotlin-gradle-plugin 2.4.21 в корневом buildscript classpath. Фактический compiler-embeddable 2.4.21 подтверждён dependencyInsight. |
+| 4 | core-ktx 1.16.0 | Обновлён до 1.19.1. |
+| 5 | appcompat 1.7.1 | Обновлён до 1.8.0. |
+| 6 | lifecycle-viewmodel-ktx 2.8.1 | Обновлён до 2.11.0. |
+| 7 | lifecycle-runtime-ktx 2.8.1 | Обновлён до 2.11.0; общая версия Lifecycle сохранена. |
+| 8 | Material 1.12.0 | Обновлён до 1.14.0. |
+| 9 | activity 1.10.1 | Обновлён до 1.13.0. |
+| 10 | constraintlayout 2.2.1 | Обновлён до 2.2.2. |
+| 11 | Google play-services-ads 23.0.0 | Удалена неиспользуемая запись и версия; Google Ads не добавлен в приложение. |
+| 12 | Appodeal sdk 3.7.0.0 | Удалена неиспользуемая запись и версия; Appodeal не добавлен в приложение. |
+| 13 | recyclerview 1.3.2 | Обновлён до 1.4.0. |
+| 14 | coroutines-android 1.9.0 | Обновлён до 1.11.0. |
+| 15 | Неиспользуемый alias androidx-activity-ktx | Удалён вместе с пунктом 1. |
+| 16 | Неиспользуемый alias play-services-ads | Удалён вместе с пунктом 11. |
+| 17 | Неиспользуемый alias sdk | Удалён вместе с пунктом 12. |
+| 18 | Устаревший android / BaseAppModuleExtension | Удалён android.newDsl=false; сборка действительно использует публичный ApplicationExtension. Также удалён android.builtInKotlin=false. |
+| 19 | Устаревший kotlinOptions | Перенесён в kotlin.compilerOptions вне android. |
+| 20 | Устаревший строковый jvmTarget | Использован типизированный JvmTarget.JVM_11; Java/Kotlin bytecode target остался 11. |
+| 21 | enableSplit помечен Incubating | Публичный BundleLanguage.enableSplit в AGP 9.4.1 всё ещё имеет эту аннотацию. Настройка сохранена для доступности всех языков; добавлены объяснение и локальный //noinspection UnstableApiUsage только перед присваиванием. Это документированное подавление IDE-инспекции, а не снятие аннотации в AGP. |
+| 22 | activity_main.xml: modeSwitch с weight=1 и wrap_content | layout_width заменён на 0dp. XML thumb/track, цвета и правила доступа сохранены. |
+
+Основания миграции: [встроенная поддержка Kotlin](https://developer.android.com/build/migrate-to-built-in-kotlin), [обновление KGP в AGP](https://developer.android.com/build/releases/agp-9-0-0-release-notes#runtime-dependency-on-kotlin-gradle-plugin-upgrade), [compilerOptions](https://kotlinlang.org/docs/gradle-compiler-options.html), [BundleLanguage](https://developer.android.com/reference/tools/gradle-api/9.4/com/android/build/api/dsl/BundleLanguage), [точечное подавление UnstableApiUsage](https://www.jetbrains.com/help/inspectopedia/UnstableApiUsage.html). Аннотация Incubating дополнительно проверена javap в установленном gradle-api-9.4.1.jar.
+
+### Сборки и сохранение настроек
+
+Успешны assembleDebug, assembleDebugAndroidTest, testDebugUnitTest, lintDebug, assembleRelease и bundleRelease; release использует R8/resource shrinking. JVM: **54/54**, без failures/errors. Lint: **0 ошибок / 88 предупреждений**, было 0/103; удалились 14 предупреждений об обновлении зависимостей и InefficientWeight. Новых предупреждений нет. В libs.versions.toml, app/build.gradle.kts и activity_main.xml предупреждений Android Lint нет. Остальные 88 относятся к ранее существовавшим замечаниям вне присланного списка. IDE-инспекция отдельно в Android Studio не запускалась; после изменений требуется Gradle Sync для актуализации её модели.
+
+Проверены фактические ApplicationExtension, JVM_11, minSdk/targetSdk и все прямые версии releaseRuntimeClasspath. В готовом AAB сохранён LANGUAGE negate=true (языковых split нет). Пакет com.divinegames.mmover, версия 2.01/201, production-код Kotlin, рекламные ID/политики, подпись и платёжные настройки не менялись. Yandex Mobile Ads остался 8.6.0; Google Ads и Appodeal отсутствуют в runtime-графе. Удалены только два флага старого Kotlin/DSL; остальные ранее заданные параметры AGP/R8 сохранены.
+
+### Runtime-проверки
+
+| API / конфигурация | Основной набор | Дополнительно |
+| --- | --- | --- |
+| 25 / Small_Phone | 29/29 | Шрифт 150% 10/10; live demo 2/2 |
+| 28 / Pixel_3 | 29/29 | — |
+| 32 / Pixel_6_Pro, окончательный повтор | 29/29 | Временный авиарежим в read-only сеансе |
+| 36 / Medium_Phone_API_36 | 29/29 | — |
+| 37 / MMover_API_37 | 29/29 | Шрифт 150% 10/10; live demo 2/2 |
+| 37 / широкий экран 2560×1600, density 320 | 12/12 | SplashLifecycleTest 3/3 |
+
+Итого **184 успешных запуска методов в окончательных наборах**, без пропусков. Скриншоты главной панели просмотрены на маленьком/обычном/широком экране, а также Settings на широком экране. Сохранились обе темы, четыре локализации, переключатели, движение/остановка, настройки и поведение при пересоздании. Live demo проверяет реальную загрузку двух баннеров и rewarded и сохранение баннеров после инструкции; полный просмотр/закрытие rewarded в эту проверку не входил. SplashLifecycleTest проверяет задержку заставки, уход в фон, возврат и уничтожение.
+
+Первый API 32 дал 28/29. Системный лог показывает запуск com.android.settings/.sim.SimDialogActivity в 18:19:45, затем onPause/onResume MainActivity во время ожидания теста. Приложение остановилось при уходе в фон, после чего тест не увидел ожидаемое состояние. Полный повтор в свежем read-only сеансе с временным авиарежимом дал 29/29 без изменений APK, тестов и assertions. В повторе система также инициировала SIM-диалог, но уже на другой фазе; отсутствие этого системного диалога не заявляется. Первый прогон сохранён в api32/ и не включён в 184 успешных запуска; окончательный — api32-retry/. Ключевые строки диагностики: api32-sim-dialog-diagnosis.txt.
+
+В финальных logcat нет FATAL EXCEPTION, ANR приложения или Fatal signal. Эмуляторы запускались последовательно с -read-only -no-snapshot и закрыты. Данные пользовательских устройств не очищались. git diff --check прошёл; аудит исходных tracked-файлов показывает только семь ожидаемых изменений этой задачи (каталог, два build.gradle.kts, gradle.properties, activity_main.xml, AGENTS.md и этот отчёт). Production Kotlin и androidTest-код не менялись.
+
+Артефакты: artifacts/core-fixes-2026-10-24/dependency-cleanup/ (исключены из Git). Сохранены исходные семь файлов before/, source-hashes-before.json, stable-versions.json и XML метаданных; build.log, kotlin-compiler.log, resolved-dependencies.log, dsl-verification.log, bundle-config.json, release-badging.txt, final-lint.xml, lint-delta.json, unit-summary.json. Итоги: test-summary.json, source-change-audit.json и build-artifact-hashes.json. Сценарии: run-matrix.ps1, run-api32-retry.ps1 и run-tablet.ps1. Коммит, push и публикация не выполнялись.

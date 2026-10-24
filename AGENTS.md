@@ -8,7 +8,7 @@
 
 ## Стек и код
 
-Kotlin 2.2.10, AGP 9.4.1, Gradle 9.6.0; minSdk 24, compileSdk/targetSdk 37, Java 11 и desugaring. Модуль `app`, XML, View Binding, AppCompat, Preference, Material, корутины. Зависимости закреплены в `gradle/libs.versions.toml`.
+Kotlin 2.4.21 через встроенную поддержку AGP 9.4.1 (новый публичный DSL), Gradle 9.6.0; minSdk 24, compileSdk/targetSdk 37, Java 11 и desugaring. Модуль `app`, XML, View Binding, AppCompat, Preference, Material, корутины. Зависимости закреплены в `gradle/libs.versions.toml`.
 
 - `MotionController`, `TaskScheduler`: чистая логика движения, ожидания и остановки. Один callback, монотонное время. `pause_duration` хранит шаги по 5 секунд.
 - `MainActivity`: отображение состояния, яркость и вибрация. В `onPause` движение останавливается, при возврате само не запускается. В `onDestroy` закрываются контроллеры.
