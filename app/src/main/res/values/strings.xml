@@ -105,11 +105,6 @@
     <string name="speed_title">Background movement speed</string>
     <string name="speed_summary">Current speed: %d px/sec</string>
 
-    <string name="rate_dialog_title">Rate Mouse Mover</string>
-    <string name="rate_dialog_message">If you enjoy using this app, would you mind taking a moment to rate it? Thanks for your support!</string>
-    <string name="rate_dialog_rate_now">Rate Now</string>
-    <string name="rate_dialog_later">Later</string>
-    <string name="rate_dialog_no_thanks">No, Thanks</string>
     <string name="stealth_watch_ad">Watch ad</string>
     <string name="stealth_not_now">Not now</string>
 </resources>

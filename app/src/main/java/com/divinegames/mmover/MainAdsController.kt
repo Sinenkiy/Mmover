@@ -30,7 +30,8 @@ internal class MainAdsController(
     private val bottomContainer: FrameLayout,
     onReward: () -> Unit,
     onStateChanged: () -> Unit,
-    onMessage: (Int) -> Unit
+    onMessage: (Int) -> Unit,
+    onFullscreenAd: () -> Unit = {}
 ) {
     internal val requestPolicy = AdRequestPolicy()
     private var closed = false
@@ -54,6 +55,8 @@ internal class MainAdsController(
     private var lastError: String? = null
     private var rewardCallback: (() -> Unit)? = onReward
     private var stateCallback: (() -> Unit)? = onStateChanged
+    private var fullscreenCallback: (() -> Unit)? = onFullscreenAd
+    val isFullscreenShowing: Boolean get() = session != null
     private var messageCallback: ((Int) -> Unit)? = onMessage
 
     // Preserve the Russian production configuration, including its demo top slot.
@@ -222,6 +225,7 @@ internal class MainAdsController(
         val token = requestPolicy.generation
         val claim = RewardSession { rewardCallback?.invoke() }
         session = claim
+        fullscreenCallback?.invoke()
         rewarded = null
         showing = ad
         ad.setAdEventListener(object : RewardedAdEventListener {
@@ -252,6 +256,7 @@ internal class MainAdsController(
     }
 
     private fun endPresentation() {
+        if (session != null) fullscreenCallback?.invoke()
         session?.close()
         session = null
         showing?.setAdEventListener(null)
@@ -277,6 +282,6 @@ internal class MainAdsController(
         rewarded = null
         endPresentation()
         loading = false
-        rewardCallback = null; stateCallback = null; messageCallback = null
+        rewardCallback = null; stateCallback = null; messageCallback = null; fullscreenCallback = null
     }
 }

@@ -27,6 +27,8 @@ class MainActivity : BaseActivity() {
     private lateinit var rewardController: RewardAccessController
     internal lateinit var adsController: MainAdsController
         private set
+    internal lateinit var reviewController: ReviewController
+        private set
     private var stealthDialog: StealthRewardDialog? = null
     private var renderingStealthSwitch = false
     private var backgroundDirty = false
@@ -66,6 +68,10 @@ class MainActivity : BaseActivity() {
         }
         Log.d("RegionDebug", "Device locale: ${locale.language}-${locale.country}")
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        reviewController = ReviewController(
+            ReviewPolicy(PreferenceReviewStore(this)), MainThreadScheduler(),
+            RuStoreReviewGateway(applicationContext), canShow = ::canPromptForReview
+        )
         rewardController = RewardAccessController(
             RewardAccess(PreferenceRewardAccessStore(prefs)),
             MainThreadScheduler()
@@ -74,7 +80,8 @@ class MainActivity : BaseActivity() {
             this, binding.mainContainer, binding.adViewContainerTop, binding.adViewContainerBottom,
             onReward = { rewardController.grant() },
             onStateChanged = ::updateStealthSwitchState,
-            onMessage = { showSafeToast(it) }
+            onMessage = { showSafeToast(it) },
+            onFullscreenAd = { reviewController.onFullscreenAd() }
         )
         motionController = MotionController(
             MainThreadScheduler(),
@@ -183,9 +190,11 @@ class MainActivity : BaseActivity() {
         listOf(binding.settingsButton, binding.backButton, binding.optionsButton, binding.removeAdsButton)
             .forEach(hints::bind)
         binding.settingsButton.setOnClickListener {
+            reviewController.cancelPending()
             settingsLauncher.launch(Intent(this, SettingsActivity::class.java))
         }
         binding.removeAdsButton.setOnClickListener {
+            reviewController.cancelPending()
             if (canShowUi()) {
                 AlertDialog.Builder(this)
                     .setTitle(R.string.remove_ads_purchase)
@@ -206,25 +215,29 @@ class MainActivity : BaseActivity() {
 
         binding.playPauseButton.setOnClickListener {
             if (motionController.state == MotionController.State.Stopped) {
+                reviewController.onSessionStarted()
                 motionController.start()
             } else {
                 motionController.stop()
-                checkRatingOnStop()
+                reviewController.onManualStop()
             }
         }
         binding.modeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (renderingStealthSwitch) return@setOnCheckedChangeListener
+            reviewController.cancelPending()
             if (!rewardController.setEnabled(isChecked) && isChecked) {
                 renderStealthSwitch(false)
                 showStealthModeDialog()
             }
         }
         binding.optionsButton.setOnClickListener { view ->
+            reviewController.cancelPending()
             val popup = createMainMenu(view) { menuItem: MenuItem ->
                 when (menuItem.itemId) {
                     R.id.menu_settings -> settingsLauncher.launch(Intent(this, SettingsActivity::class.java))
                     R.id.menu_contact -> sendEmail() // <-- ДОБАВЛЕНО
                     R.id.menu_share -> shareAppLink()
+                    R.id.menu_rustore -> openRuStorePage()
                     R.id.menu_faq -> openInfoScreen(R.string.menu_faq, R.drawable.my_faq_image, R.string.faq_text)
                 }
                 true
@@ -234,6 +247,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun openStartScreen() {
+        reviewController.cancelPending()
         startActivity(Intent(this, StartActivity::class.java)
             .putExtra("forceOnboarding", true)
             .putExtra(StartActivity.RETURN_TO_MAIN, true))
@@ -310,6 +324,7 @@ class MainActivity : BaseActivity() {
             backgroundDirty = backgroundStyle != newStyle
             backgroundStyle = newStyle
         }
+        reviewController.onResume()
         rewardController.onResume()
         adsController.onResume()
 
@@ -328,12 +343,14 @@ class MainActivity : BaseActivity() {
     override fun onPause() {
         super.onPause()
         logMem("onPause")
+        reviewController.onPause()
         motionController.stop()
         rewardController.onPause()
         adsController.onPause()
     }
 
     override fun onDestroy() {
+        reviewController.close()
         stealthDialog?.dismiss()
         stealthDialog = null
         adsController.close()
@@ -370,38 +387,24 @@ class MainActivity : BaseActivity() {
         vibrator.cancel()
     }
 
-    private fun checkRatingOnStop() {
-        val neverShow = prefs.getBoolean("never_show_rating", false)
-        if (neverShow) return
-        val currentStopClicks = prefs.getInt("stop_click_count", 0) + 1
-        prefs.edit().putInt("stop_click_count", currentStopClicks).apply()
-        if (currentStopClicks % 10 == 0) {
-            showRateAppDialog()
-        }
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (!hasFocus && ::reviewController.isInitialized) reviewController.cancelPending()
     }
 
-    private fun showRateAppDialog() {
-        if (!canShowUi()) return
+    private fun canPromptForReview(): Boolean =
+        canShowUi() && lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.RESUMED) &&
+            window.decorView.hasWindowFocus() &&
+            motionController.state == MotionController.State.Stopped &&
+            stealthDialog?.isShowing != true && !adsController.isFullscreenShowing
 
-        AlertDialog.Builder(this)
-            .setTitle(R.string.rate_dialog_title)
-            .setMessage(R.string.rate_dialog_message)
-            .setPositiveButton(R.string.rate_dialog_rate_now) { _, _ ->
-                try {
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://apps.rustore.ru/app/com.divinegames.mmover")))
-                } catch (_: android.content.ActivityNotFoundException) {
-                    showSafeToast(R.string.store_client_not_found)
-                } catch (e: android.content.ActivityNotFoundException) {
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
-                }
-                prefs.edit().putBoolean("never_show_rating", true).apply()
-            }
-            .setNegativeButton(R.string.rate_dialog_no_thanks) { _, _ ->
-                prefs.edit().putBoolean("never_show_rating", true).apply()
-            }
-            .setNeutralButton(R.string.rate_dialog_later) { _, _ ->
-            }
-            .show()
+    private fun openRuStorePage() {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://apps.rustore.ru/app/com.divinegames.mmover")))
+        } catch (_: android.content.ActivityNotFoundException) {
+            showSafeToast(R.string.store_client_not_found)
+        }
     }
 
     private fun logMem(tag: String) {

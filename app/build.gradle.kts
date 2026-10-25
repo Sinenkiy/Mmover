@@ -70,6 +70,7 @@ dependencies {
 
     // Yandex SDK
     implementation(libs.yandex.ads)
+    implementation(libs.rustore.review)
 
     // Тестовые библиотеки
     testImplementation(libs.junit)

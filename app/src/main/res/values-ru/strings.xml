@@ -105,11 +105,6 @@
     <string name="speed_summary">Текущая скорость: %d пикс/сек</string>
     <string name="language_title">Язык</string>
 
-    <string name="rate_dialog_title">Оцените Mouse Mover</string>
-    <string name="rate_dialog_message">Если вам нравится приложение, не могли бы вы уделить момент и оценить его? Спасибо за поддержку!</string>
-    <string name="rate_dialog_rate_now">Оценить</string>
-    <string name="rate_dialog_later">Позже</string>
-    <string name="rate_dialog_no_thanks">Нет, спасибо</string>
     <string name="stealth_watch_ad">Смотреть рекламу</string>
     <string name="stealth_not_now">Не сейчас</string>
 </resources>
