@@ -40,7 +40,7 @@ android {
         language {
             // Keep all languages available for the in-app language selector.
             // AGP still marks this documented setting as incubating.
-            //noinspection UnstableApiUsage
+            @Suppress("UnstableApiUsage")
             enableSplit = false
         }
     }

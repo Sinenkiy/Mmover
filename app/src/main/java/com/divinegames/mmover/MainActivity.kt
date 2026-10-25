@@ -1,9 +1,7 @@
 package com.divinegames.mmover
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.*
 import android.util.Log
 import android.view.MenuItem
@@ -12,6 +10,7 @@ import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -35,7 +34,13 @@ class MainActivity : BaseActivity() {
     private var settingsResultReceived = false
     private var screenLanguage = ""
     private var backgroundStyle: String? = null
-    private val TAG = "MouseMoverMain"
+    private val vibrator: Vibrator? by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            getSystemService(VibratorManager::class.java)?.defaultVibrator
+        } else {
+            getSystemService(Vibrator::class.java)
+        }
+    }
     private val settingsLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         settingsResultReceived = it.resultCode == RESULT_OK
     }
@@ -60,12 +65,7 @@ class MainActivity : BaseActivity() {
         }
         ViewCompat.requestApplyInsets(binding.titleBar)
 
-        val locale = if (Build.VERSION.SDK_INT >= 24) {
-            resources.configuration.locales[0]
-        } else {
-            @Suppress("DEPRECATION")
-            resources.configuration.locale
-        }
+        val locale = resources.configuration.locales[0]
         Log.d("RegionDebug", "Device locale: ${locale.language}-${locale.country}")
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
         reviewController = ReviewController(
@@ -167,7 +167,7 @@ class MainActivity : BaseActivity() {
 
     private fun sendEmail() {
         val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:divinegames42@gmail.com")
+            data = "mailto:divinegames42@gmail.com".toUri()
             putExtra(
                 Intent.EXTRA_SUBJECT,
                 getString(R.string.email_feedback_subject)
@@ -180,7 +180,7 @@ class MainActivity : BaseActivity() {
                     getString(R.string.email_chooser_title)
                 )
             )
-        } catch (ex: android.content.ActivityNotFoundException) {
+        } catch (_: android.content.ActivityNotFoundException) {
             showSafeToast(R.string.email_client_not_found)
         }
     }
@@ -373,18 +373,17 @@ class MainActivity : BaseActivity() {
         val vibrationEnabled = prefs.getBoolean("vibration_enabled", true)
         if (!vibrationEnabled) return
 
-        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        val deviceVibrator = vibrator ?: return
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(VibrationEffect.createWaveform(longArrayOf(0, 100, 500), 0))
+            deviceVibrator.vibrate(VibrationEffect.createWaveform(longArrayOf(0, 100, 500), 0))
         } else {
             @Suppress("DEPRECATION")
-            vibrator.vibrate(longArrayOf(0, 100, 500), 0)
+            deviceVibrator.vibrate(longArrayOf(0, 100, 500), 0)
         }
     }
 
     private fun stopVibration() {
-        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        vibrator.cancel()
+        vibrator?.cancel()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -401,7 +400,7 @@ class MainActivity : BaseActivity() {
     private fun openRuStorePage() {
         try {
             startActivity(Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://apps.rustore.ru/app/com.divinegames.mmover")))
+                "https://apps.rustore.ru/app/com.divinegames.mmover".toUri()))
         } catch (_: android.content.ActivityNotFoundException) {
             showSafeToast(R.string.store_client_not_found)
         }

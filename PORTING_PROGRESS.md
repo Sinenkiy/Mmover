@@ -293,3 +293,33 @@ API 36: 40/40, включая реальный RuStoreReviewGateway при от�
 Первые неудачные прогоны не удалены и не включены в итоговую сумму: API 37 до исправления ожидания UI — 38/40; API 32 — 39/40 (жест ползунка, точная причина не установлена, полный повтор успешен); сетевой тест API 25 и его повтор — по 1/2 (Yandex network error, код 3). Последняя сетевая проверка API 25 остаётся неуспешной: SDK инициализирован, но баннеры/rewarded не загрузились за 90 секунд. На API 37 загрузка прошла. Дополнительная диагностика API 25: HTTP proxy не задан, yandex.ru разрешается в IP; ICMP-ответа нет. Это не устанавливает причину HTTP/SDK-ошибки. Production-код настроек и старый SettingsLayoutTest не изменялись. Повтор API 32 использовал те же APK и assertions. Эмуляторы запускались последовательно с -read-only -no-snapshot; временные изменения настроек не сохранялись в AVD. Эталон MouseMover не изменялся, существующие незакоммиченные файлы переноса сохранены. Коммит, push, подпись ключом публикации и загрузка в RuStore не выполнялись.
 
 Артефакты: artifacts/core-fixes-2026-10-24/rustore-review-2026-10-25/ (исключены из Git). Исходные хеши и before/, compile.log, build.log, final-build.log, labels-final-build.log, test-harness-build.log, final-lint.xml, lint-delta.json, release-dependencies.log, merged-manifest.xml, unit-summary.json, test-summary.json, build-artifact-hashes.json, code-matrix-artifact-hashes.json, source-change-audit.json; каталоги API с runtime-version, instrumentation и logcat, снимки меню; run-matrix-final.ps1, run-api32-retry.ps1, run-api25-demo-retry.ps1 и run-menu-final.ps1 для воспроизведения.
+
+
+## Предупреждения Android Studio — 25.10.2026 (правки и проверки завершены)
+
+До изменений Gradle help и prepareKotlinBuildScriptModel завершились успешно. Alias rustore-review присутствует в каталоге, сгенерированный LibrariesForLibs содержит getRustore()/getReview(); ошибка IDE Unresolved reference rustore при конфигурации Gradle не воспроизводится. Подключение SDK 10.5.2 корректно, менять зависимость не требуется. После изменений нужен Sync Project with Gradle Files в Android Studio; выполнение этой UI-команды пока не подтверждено.
+
+Для централизованных repositories/FAIL_ON_PROJECT_REPOS и enableSplit=false добавлено точечное Kotlin @Suppress("UnstableApiUsage"). Эти документированные API всё ещё помечены Incubating поставщиками; прежний noinspection у enableSplit заменён аннотацией. Поведение репозиториев и упаковка всех языков сохраняются. Удалены неиспользуемые TAG/имя исключения и недостижимая ветка API < 24. Обе Uri.parse заменены на toUri. Доступ к вибрации типизирован: VibratorManager.defaultVibrator на API 31+, Vibrator на API 24–30, безопасная обработка отсутствующего сервиса; рисунок вибрации и её остановка сохранены. В двух английских строках заменено ... на ….
+
+Проверки: сборка debug/androidTest/release/AAB, JVM, lint; целевые runtime-проверки на API 25 и 37. Исходники до правок и логи: artifacts/core-fixes-2026-10-24/ide-warnings-2026-10-25/. Идентификаторы, версии SDK, реклама, платежи и подпись не меняются; эталон MouseMover не затронут.
+
+
+Итог текущего исправления:
+
+| Пункт | Результат |
+| --- | --- |
+| settings.gradle.kts: четыре UnstableApiUsage | Локальная аннотация Kotlin на блоке dependencyResolutionManagement; централизованные репозитории и FAIL_ON_PROJECT_REPOS сохранены. |
+| app/build.gradle.kts: enableSplit | Комментарий noinspection заменён на @Suppress("UnstableApiUsage") у присваивания; enableSplit=false сохранён. |
+| app/build.gradle.kts: Unresolved reference rustore | Не воспроизводится в Gradle до и после правок. libs.rustore.review и каталог корректны, dependencyInsight подтверждает ru.rustore.sdk:review:10.5.2. Требуется обновление модели IDE через Sync Project with Gradle Files; фактическое исчезновение подсветки в Android Studio не проверено. |
+| MainActivity: TAG / SDK_INT >= 24 / ex | TAG удалён, locale берётся напрямую через locales[0], исключение обозначено _. |
+| MainActivity: Uri.parse (включая повтор одной инспекции) | В обоих местах используется String.toUri(); адреса сохранены. |
+| MainActivity: Context.VIBRATOR_SERVICE и redundant qualifier | Строковый deprecated API удалён в обоих местах. VibratorManager.defaultVibrator на API 31+, типизированный Vibrator на более старых API. |
+| strings.xml: две TypographyEllipsis | Оба многоточия заменены на символ …; текст и placeholders сохранены. |
+
+Успешны assembleDebug, assembleDebugAndroidTest, testDebugUnitTest, lintDebug, assembleRelease, bundleRelease, prepareKotlinBuildScriptModel и отдельный dependencyInsight для Review. JVM: 81/81, без пропусков. Android Lint: 0 ошибок / 78 предупреждений вместо 84; новых предупреждений нет. Удалены ObsoleteSdkInt (1), TypographyEllipsis (2), UseKtx (3, включая дублирование диагностики на одной строке). IDE-only инспекции не входят в Android Lint: их проверка в открытой Android Studio требует синхронизации и повторного анализа.
+
+API 37 (MMover_API_37): 23/23; API 25 (Small_Phone): 23/23; без пропусков. Выполнены MainFlowTest, CoreUiRegressionTest и RuStoreReviewTest: lifecycle, запуск/остановка движения, настройка вибрации, UI и логика оценки, штатная обработка отсутствующего RuStore. Физическая вибрация и реальная отправка оценки этим прогоном не подтверждаются. Сетевые рекламные тесты не запускались повторно. Первый запуск harness через Windows PowerShell 5 остановился до установки APK/тестов: stderr от ещё offline ADB был трактован как исключение. Повтор выполнен в PowerShell 7, логи первой попытки сохранены в api37-shell-bootstrap. Эмуляторы закрыты, использовались -read-only -no-snapshot.
+
+Изменены четыре файла кода/конфигурации и этот журнал; каталог и все 15 уже существовавших незакоммиченных исходных файлов проверены и сохранены. Пакет, versionCode/versionName, target/compile/min SDK, рекламные идентификаторы и параметры подписи не менялись. Отчёты: build.log, model-before.log, rustore-dependency.log, unit-summary.json, lint-before.xml, lint-after.xml, lint-delta.json, android-summary.json, source-audit.json, build-artifact-hashes.json и каталоги API в artifacts/core-fixes-2026-10-24/ide-warnings-2026-10-25/. Коммит и push не выполнялись.
+
+Справка: [синхронизация Android Studio с Gradle](https://developer.android.com/build#sync-files), [инспекция UnstableApiUsage](https://www.jetbrains.com/help/inspectopedia/UnstableApiUsage.html), [VibratorManager/defaultVibrator с API 31](https://developer.android.com/reference/android/os/VibratorManager#getDefaultVibrator()).
