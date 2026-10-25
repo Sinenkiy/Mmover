@@ -237,7 +237,6 @@ class MainActivity : BaseActivity() {
                     R.id.menu_settings -> settingsLauncher.launch(Intent(this, SettingsActivity::class.java))
                     R.id.menu_contact -> sendEmail() // <-- ДОБАВЛЕНО
                     R.id.menu_share -> shareAppLink()
-                    R.id.menu_rustore -> openRuStorePage()
                     R.id.menu_faq -> openInfoScreen(R.string.menu_faq, R.drawable.my_faq_image, R.string.faq_text)
                 }
                 true
@@ -396,15 +395,6 @@ class MainActivity : BaseActivity() {
             window.decorView.hasWindowFocus() &&
             motionController.state == MotionController.State.Stopped &&
             stealthDialog?.isShowing != true && !adsController.isFullscreenShowing
-
-    private fun openRuStorePage() {
-        try {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                "https://apps.rustore.ru/app/com.divinegames.mmover".toUri()))
-        } catch (_: android.content.ActivityNotFoundException) {
-            showSafeToast(R.string.store_client_not_found)
-        }
-    }
 
     private fun logMem(tag: String) {
         val rt = Runtime.getRuntime()
