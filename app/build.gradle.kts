@@ -16,6 +16,12 @@ android {
     }
 
     buildTypes {
+        create("reviewTest") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".reviewtest"
+            versionNameSuffix = "-review-test"
+            matchingFallbacks += listOf("debug")
+        }
         release {
             isMinifyEnabled = true
             // Enables resource shrinking.
