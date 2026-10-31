@@ -10,8 +10,8 @@ android {
         applicationId = "com.divinegames.mmover"
         minSdk = 24
         targetSdk = 37
-        versionCode = 202
-        versionName = "2.02"
+        versionCode = 300
+        versionName = "3.00"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
