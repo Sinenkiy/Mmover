@@ -22,10 +22,14 @@ class YandexRewardPlaybackTest {
         prefs.edit().remove("last_stealth_activation_date").putBoolean("stealth_mode_enabled", false).commit()
         try {
             ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+                lateinit var main: MainActivity
                 var ready = false
                 val loadDeadline = SystemClock.elapsedRealtime() + 90000
                 while (!ready && SystemClock.elapsedRealtime() < loadDeadline) {
-                    scenario.onFrameActivity { ready = it.adsController.rewardedState == RewardedAdState.READY }
+                    scenario.onFrameActivity {
+                        main = it
+                        ready = it.adsController.rewardedState == RewardedAdState.READY
+                    }
                     if (!ready) SystemClock.sleep(100)
                 }
                 assertTrue("Demo rewarded must load", ready)
@@ -45,15 +49,16 @@ class YandexRewardPlaybackTest {
                     screenshot.recycle()
                 }
                 val returnDeadline = SystemClock.elapsedRealtime() + 60000
-                while (scenario.state != Lifecycle.State.RESUMED && SystemClock.elapsedRealtime() < returnDeadline) {
-                    clickClose(instrumentation.uiAutomation.rootInActiveWindow)
-                    SystemClock.sleep(300)
+                while (!returnedToMain(main) && SystemClock.elapsedRealtime() < returnDeadline) {
+                    if (!DemoAdControls.closeEarnedDemo())
+                        clickClose(instrumentation.uiAutomation.rootInActiveWindow)
+                    SystemClock.sleep(750)
                 }
-                if (scenario.state != Lifecycle.State.RESUMED) {
+                if (!returnedToMain(main)) {
                     val output = java.io.File(instrumentation.targetContext.getExternalFilesDir(null), "rewarded-close-tree.txt")
                     output.writeText(describe(instrumentation.uiAutomation.rootInActiveWindow))
                 }
-                assertEquals("Return after the demo", Lifecycle.State.RESUMED, scenario.state)
+                assertTrue("Return after the demo", returnedToMain(main))
                 scenario.onFrameActivity {
                     assertTrue(it.findViewById<androidx.appcompat.widget.SwitchCompat>(R.id.modeSwitch).isChecked)
                 }
@@ -65,10 +70,20 @@ class YandexRewardPlaybackTest {
             }.commit()
         }
     }
+    private fun returnedToMain(main: MainActivity): Boolean {
+        // ActivityScenario.state waits for main-thread idle; SDK video can keep producing frames.
+        var returned = false
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            returned = main.lifecycle.currentState == Lifecycle.State.RESUMED &&
+                !main.adsController.isFullscreenShowing && main.window.decorView.hasWindowFocus()
+        }
+        return returned
+    }
+
     private fun clickClose(node: AccessibilityNodeInfo?): Boolean {
         if (node == null) return false
-        val label = "${node.text?.toString().orEmpty()} ${node.contentDescription?.toString().orEmpty()}".trim()
-        val closeLabel = Regex("(?i)^(close|close ad|закрыть|закрыть рекламу|schließen|fermer)$").matches(label)
+        val labels = listOfNotNull(node.text, node.contentDescription).map { it.toString().trim() }
+        val closeLabel = Regex("(?i)^(close|close ad|закрыть|закрыть рекламу|schließen|fermer)$").let { pattern -> labels.any(pattern::matches) }
         val closeId = node.viewIdResourceName?.substringAfter(":id/")?.let {
             it == "close" || it == "close_button" || it == "closeButton" || it == "ad_close"
         } == true

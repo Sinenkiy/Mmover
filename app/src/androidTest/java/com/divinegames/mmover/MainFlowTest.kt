@@ -281,9 +281,9 @@ class MainFlowTest {
     }
     private fun withMain(block: (ActivityScenario<MainActivity>) -> Unit) {
         val keys = listOf("active_duration", "pause_duration", "brightness", "vibration_enabled",
-            "stealth_mode_enabled", "last_stealth_activation_date", "never_show_rating", "stop_click_count", "animation_style")
+            "stealth_mode_enabled", "last_stealth_activation_date", "never_show_rating", "stop_click_count", "animation_style", SessionTimerController.PREFERENCE)
         val saved = keys.associateWith { prefs.all[it] }
-        prefs.edit().putInt("active_duration", 3).putInt("pause_duration", 1).putInt("brightness", 80)
+        prefs.edit().putInt(SessionTimerController.PREFERENCE, 0).putInt("active_duration", 3).putInt("pause_duration", 1).putInt("brightness", 80)
             .putBoolean("vibration_enabled", false).putBoolean("stealth_mode_enabled", false)
             .putString("last_stealth_activation_date", "").putBoolean("never_show_rating", true)
             .putString("animation_style", "background_blocks_large").commit()

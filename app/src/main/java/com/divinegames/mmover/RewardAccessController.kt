@@ -14,6 +14,8 @@ internal class RewardAccessController(
 
     fun isEnabled() = access.isEnabled()
 
+    fun hasAccess() = !closed && access.hasAccess()
+
     fun setEnabled(enabled: Boolean): Boolean {
         if (closed) return false
         val result = access.setEnabled(enabled)

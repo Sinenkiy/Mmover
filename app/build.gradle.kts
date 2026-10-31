@@ -31,6 +31,16 @@ android {
                 "proguard-rules.pro"
             )
         }
+        create("reviewDiagnostic") {
+            initWith(getByName("release"))
+            // Same package/versionCode as release: sign with the existing app key in Android Studio.
+            // Keep SDK exception names readable, without exposing production data through run-as.
+            isDebuggable = false
+            isMinifyEnabled = false
+            isShrinkResources = false
+            versionNameSuffix = "-review-diagnostic"
+            matchingFallbacks += listOf("release")
+        }
     }
     buildFeatures {
         viewBinding = true
@@ -49,6 +59,14 @@ android {
             @Suppress("UnstableApiUsage")
             enableSplit = false
         }
+    }
+}
+
+// AGP does not create host tests for this custom release-derived variant by default.
+@Suppress("UnstableApiUsage")
+androidComponents {
+    beforeVariants(selector().withBuildType("reviewDiagnostic")) { variant ->
+        variant.hostTests.getValue(com.android.build.api.variant.HostTestBuilder.UNIT_TEST_TYPE).enable = true
     }
 }
 

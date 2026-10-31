@@ -13,18 +13,22 @@ internal interface RewardAccessStore {
 /** Calendar-day access; disabling the mode does not discard today's earned entitlement. */
 internal class RewardAccess(
     private val store: RewardAccessStore,
+    // Supply only a verified purchase entitlement when billing is integrated.
+    private val permanentAccess: () -> Boolean = { false },
     private val now: () -> ZonedDateTime = { ZonedDateTime.now() }
 ) {
+    fun hasAccess(): Boolean = permanentAccess() || store.read().date == today()
+
     fun isEnabled(): Boolean {
         val record = store.read()
-        if (record.date == today()) return record.enabled
+        if (permanentAccess() || record.date == today()) return record.enabled
         if (record.enabled) store.write(record.copy(enabled = false))
         return false
     }
 
     fun setEnabled(enabled: Boolean): Boolean {
         val record = store.read()
-        val permitted = enabled && record.date == today()
+        val permitted = enabled && (permanentAccess() || record.date == today())
         if (record.enabled != permitted) store.write(record.copy(enabled = permitted))
         return permitted
     }
@@ -42,15 +46,18 @@ internal class RewardAccess(
 }
 
 /** One presentation can grant at most once; failure, dismissal and disposal close it. */
-internal class RewardSession(private val grant: () -> Unit) {
+internal class RewardSession(grant: () -> Unit) {
+    private var grantCallback: (() -> Unit)? = grant
     private var rewarded = false
     private var closed = false
 
     fun reward() {
         if (closed || rewarded) return
         rewarded = true
-        grant()
+        val callback = grantCallback
+        grantCallback = null
+        callback?.invoke()
     }
 
-    fun close() { closed = true }
+    fun close() { closed = true; grantCallback = null }
 }

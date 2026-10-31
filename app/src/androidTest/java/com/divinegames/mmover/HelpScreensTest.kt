@@ -157,6 +157,12 @@ class HelpScreensTest {
                             repeat(text.lineCount) { line -> assertEquals(0, text.layout.getEllipsisCount(line)) }
                         }
                     }
+                    onView(withId(R.id.rateAppButton)).perform(scrollTo()).check(matches(isDisplayed()))
+                    scenario.onActivity {
+                        val button = it.findViewById<TextView>(R.id.rateAppButton)
+                        assertEquals(it.getString(R.string.manual_review_button), button.text.toString())
+                        repeat(button.lineCount) { line -> assertEquals(0, button.layout.getEllipsisCount(line)) }
+                    }
                     screenshot("faq-$language")
                 }
             }

@@ -1,7 +1,9 @@
 package com.divinegames.mmover
 
 import android.content.Context
-import androidx.appcompat.app.AlertDialog
+import android.view.LayoutInflater
+import androidx.core.view.isVisible
+import com.divinegames.mmover.databinding.DialogRewardAccessBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 internal enum class RewardedAdState { UNAVAILABLE, LOADING, READY, FAILED }
@@ -10,37 +12,34 @@ internal enum class RewardedAdState { UNAVAILABLE, LOADING, READY, FAILED }
 internal class StealthRewardDialog(
     private val context: Context,
     onRetry: () -> Unit = {},
+    @androidx.annotation.StringRes titleRes: Int = R.string.stealth_dialog_title,
+    @androidx.annotation.StringRes private val messageRes: Int = R.string.stealth_dialog_message,
+    onDismiss: () -> Unit = {},
     onWatch: () -> Unit
 ) {
     private var state = RewardedAdState.UNAVAILABLE
-    private val dialog = MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_MouseMover_RewardDialog)
-        .setTitle(R.string.stealth_dialog_title)
-        .setMessage(R.string.stealth_dialog_message)
-        .setPositiveButton(R.string.stealth_watch_ad, null)
-        .setNegativeButton(R.string.stealth_not_now, null)
-        .setNeutralButton(R.string.rewarded_retry, null)
-        .create()
+    private val builder = MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_MouseMover_RewardDialog)
+    private val ui = DialogRewardAccessBinding.inflate(LayoutInflater.from(builder.context))
+    // Keep actions in the scrollable content: the native stacked footer clips at large font sizes.
+    private val dialog = builder.setTitle(titleRes).setView(ui.root).create()
 
     init {
-        dialog.setOnShowListener {
-            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
-                if (state == RewardedAdState.FAILED) onRetry()
+        dialog.setOnDismissListener { onDismiss() }
+        ui.rewardRetry.setOnClickListener { if (state == RewardedAdState.FAILED) onRetry() }
+        ui.rewardCancel.setOnClickListener { dialog.dismiss() }
+        ui.rewardWatch.setOnClickListener {
+            if (state == RewardedAdState.READY) {
+                dialog.dismiss()
+                onWatch()
             }
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                if (state == RewardedAdState.READY) {
-                    dialog.dismiss()
-                    onWatch()
-                }
-            }
-            render(state)
         }
     }
 
     val isShowing get() = dialog.isShowing
 
     fun show(initialState: RewardedAdState) {
-        state = initialState
         dialog.show()
+        render(initialState)
     }
 
     fun render(newState: RewardedAdState) {
@@ -52,13 +51,14 @@ internal class StealthRewardDialog(
             RewardedAdState.READY -> R.string.rewarded_status_ready
             RewardedAdState.FAILED -> R.string.rewarded_status_failed
         }
-        dialog.setMessage(context.getString(R.string.stealth_dialog_message) + "\n\n" + context.getString(status))
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+        ui.rewardMessage.text = context.getString(R.string.rewarded_dialog_message_format,
+            context.getString(messageRes), context.getString(status))
+        ui.rewardWatch.apply {
             setText(if (state == RewardedAdState.LOADING) R.string.rewarded_loading_button else R.string.stealth_watch_ad)
             isEnabled = state == RewardedAdState.READY
+            alpha = if (isEnabled) 1f else 0.45f
         }
-        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).visibility =
-            if (state == RewardedAdState.FAILED) android.view.View.VISIBLE else android.view.View.GONE
+        ui.rewardRetry.isVisible = state == RewardedAdState.FAILED
     }
 
     fun dismiss() = dialog.dismiss()

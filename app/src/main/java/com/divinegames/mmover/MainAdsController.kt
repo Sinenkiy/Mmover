@@ -219,24 +219,28 @@ internal class MainAdsController(
         else loadRewarded()
     }
 
-    fun showRewarded() {
+    fun showRewarded(onReward: () -> Unit = { rewardCallback?.invoke() }) {
         if (!canRequest() || session != null) return
         val ad = rewarded ?: run { messageCallback?.invoke(R.string.rewarded_ad_not_ready); return }
         val token = requestPolicy.generation
-        val claim = RewardSession { rewardCallback?.invoke() }
+        // Capture this presentation's feature; a timer reward must not enable stealth.
+        val claim = RewardSession(onReward)
         session = claim
         fullscreenCallback?.invoke()
         rewarded = null
         showing = ad
         ad.setAdEventListener(object : RewardedAdEventListener {
-            override fun onAdShown() {}
+            override fun onAdShown() { traceRewarded("shown") }
             override fun onAdClicked() {}
             override fun onAdImpression(impressionData: ImpressionData?) {}
             override fun onRewarded(reward: Reward) {
                 // Grant immediately even while the presentation pauses MainActivity.
-                if (accepts(token) && session === claim) claim.reward()
+                val accepted = accepts(token) && session === claim
+                traceRewarded("reward accepted=$accepted")
+                if (accepted) claim.reward()
             }
             override fun onAdDismissed() {
+                traceRewarded("dismissed")
                 if (accepts(token) && session === claim) {
                     endPresentation()
                     stateCallback?.invoke()
@@ -244,6 +248,7 @@ internal class MainAdsController(
                 }
             }
             override fun onAdFailedToShow(adError: AdError) {
+                traceRewarded("failed to show")
                 if (accepts(token) && session === claim) {
                     endPresentation()
                     fail("show", adError.description)
@@ -251,8 +256,13 @@ internal class MainAdsController(
             }
         })
         stateCallback?.invoke()
+        traceRewarded("show requested")
         try { ad.show(activity) }
         catch (error: Exception) { endPresentation(); fail("show", error.message ?: "SDK exception") }
+    }
+
+    private fun traceRewarded(event: String) {
+        if (BuildConfig.DEBUG) Log.d("MainAds", "Yandex rewarded: $event")
     }
 
     private fun endPresentation() {

@@ -113,7 +113,7 @@
 
         <LinearLayout
             android:id="@+id/modePanel"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginStart="12dp"
@@ -125,41 +125,90 @@
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constrainedWidth="true"
+            android:orientation="vertical"
+            app:layout_constraintWidth_max="420dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ad_view_container_top">
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/modeSwitch"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minHeight="48dp"
-                android:textSize="14sp"
-                android:text="@string/stealth_mode_switch"
-                android:textColor="@color/glass_text"
-                app:switchPadding="10dp"
-                android:thumb="@drawable/stealth_switch_thumb"
-                app:track="@drawable/stealth_switch_track"
-                app:thumbTint="@color/glass_switch_thumb"
-                app:trackTint="@color/glass_switch_track" />
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="28dp"
-                android:layout_marginStart="10dp"
-                android:background="@color/glass_edge" />
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/modeSwitch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="48dp"
+                    android:textSize="14sp"
+                    android:text="@string/stealth_mode_switch"
+                    android:textColor="@color/glass_text"
+                    app:switchPadding="6dp"
+                    android:thumb="@drawable/stealth_switch_thumb"
+                    app:track="@drawable/stealth_switch_track"
+                    app:thumbTint="@color/glass_switch_thumb"
+                    app:trackTint="@color/glass_switch_track" />
 
-            <ImageButton
-                android:id="@+id/removeAdsButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_ads_off"
-                app:tint="@color/glass_text"
-                android:contentDescription="@string/remove_ads_title" />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@color/glass_secondary_text"
+                    android:alpha="0.35"
+                    android:importantForAccessibility="no" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/timerButton"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:minHeight="48dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="@string/session_timer_label"
+                    android:textSize="14sp"
+                    android:textAllCaps="false"
+                    android:fontFamily="sans-serif"
+                    android:letterSpacing="0"
+                    android:maxLines="1"
+                    android:textColor="@color/session_timer_icon_tint"
+                    android:contentDescription="@string/session_timer_button"
+                    app:icon="@drawable/ic_session_timer"
+                    app:iconSize="24dp"
+                    app:iconPadding="6dp"
+                    app:iconGravity="textEnd"
+                    app:iconTint="@color/session_timer_icon_tint" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="28dp"
+                    android:background="@color/glass_secondary_text"
+                    android:alpha="0.35"
+                    android:importantForAccessibility="no" />
+
+                <ImageButton
+                    android:id="@+id/removeAdsButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_ads_off"
+                    app:tint="@color/glass_text"
+                    android:contentDescription="@string/remove_ads_title" />
+            </LinearLayout>
+            <TextView android:id="@+id/timerStatus" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginTop="4dp"
+                android:paddingStart="4dp" android:paddingEnd="8dp" android:paddingBottom="8dp"
+                android:gravity="center" android:textSize="14sp" android:textStyle="bold"
+                android:textColor="@color/glass_text" android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout

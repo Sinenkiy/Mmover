@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import org.hamcrest.Matchers.not
@@ -23,20 +24,20 @@ class RewardedDialogTest {
                 }) { watches++ }
                 dialog.show(RewardedAdState.LOADING)
             }
-            onView(withId(android.R.id.button1)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).check(matches(not(isEnabled())))
-            onView(withText(R.string.rewarded_loading_button)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).check(matches(isDisplayed()))
+            onView(withId(R.id.rewardWatch)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).check(matches(not(isEnabled())))
+            onView(withText(R.string.rewarded_loading_button)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).perform(scrollTo()).check(matches(isDisplayed()))
             scenario.onActivity { dialog.render(RewardedAdState.FAILED) }
-            onView(withId(android.R.id.button1)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).check(matches(not(isEnabled())))
+            onView(withId(R.id.rewardWatch)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).check(matches(not(isEnabled())))
             var failureText = ""
             scenario.onActivity { failureText = it.getString(R.string.rewarded_status_failed) }
-            onView(withId(android.R.id.message)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).check(matches(withText(org.hamcrest.Matchers.containsString(failureText))))
+            onView(withId(R.id.rewardMessage)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).check(matches(withText(org.hamcrest.Matchers.containsString(failureText))))
             screenshot("rewarded-failed")
-            onView(withId(android.R.id.button3)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).perform(click())
-            onView(withId(android.R.id.button1)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).check(matches(not(isEnabled())))
+            onView(withId(R.id.rewardRetry)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).perform(scrollTo(), click())
+            onView(withId(R.id.rewardWatch)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).check(matches(not(isEnabled())))
             awaitUi(scenario) { retries == 1 }
             scenario.onActivity { assertEquals(1, retries); assertTrue(dialog.isShowing) }
             scenario.onActivity { assertEquals(0, watches); dialog.render(RewardedAdState.READY) }
-            onView(withId(android.R.id.button1)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).check(matches(isEnabled())).perform(click())
+            onView(withId(R.id.rewardWatch)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).check(matches(isEnabled())).perform(scrollTo(), click())
             awaitUi(scenario) { watches == 1 && !dialog.isShowing }
             scenario.onActivity { assertEquals(1, watches); assertFalse(dialog.isShowing) }
         }
@@ -50,8 +51,8 @@ class RewardedDialogTest {
                 dialog = StealthRewardDialog(it) { watches++ }
                 dialog.show(RewardedAdState.UNAVAILABLE)
             }
-            onView(withId(android.R.id.button1)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).check(matches(not(isEnabled())))
-            onView(withId(android.R.id.button2)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).perform(click())
+            onView(withId(R.id.rewardWatch)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).check(matches(not(isEnabled())))
+            onView(withId(R.id.rewardCancel)).inRoot(androidx.test.espresso.matcher.RootMatchers.isDialog()).perform(scrollTo(), click())
             awaitUi(scenario) { !dialog.isShowing }
             scenario.onActivity {
                 dialog.render(RewardedAdState.READY)
